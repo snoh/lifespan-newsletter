@@ -5,8 +5,9 @@ from dotenv import load_dotenv
 # 환경 변수 로드
 load_dotenv()
 
-# API 키 가져오기
-api_key = os.getenv("OPENAI_API_KEY")
+# API 키 가져오기 (config에서 가져오기)
+from config import OPENAI_API_KEY
+api_key = OPENAI_API_KEY
 print(f"API 키 길이: {len(api_key) if api_key else 0}")
 print(f"API 키 시작: {api_key[:20] if api_key else 'None'}...")
 print(f"API 키 끝: ...{api_key[-10:] if api_key else 'None'}")

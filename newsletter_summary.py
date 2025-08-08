@@ -108,7 +108,8 @@ def is_psychology_related(entry) -> bool:
     return False
 
 def extract_keywords(text: str) -> list[str]:
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    from config import OPENAI_API_KEY
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     resp = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": KW_PROMPT.format(article=text[:6000])}],
@@ -118,7 +119,8 @@ def extract_keywords(text: str) -> list[str]:
     return kws[:5]
 
 def draft_summary(kws: list[str], text: str) -> str:
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    from config import OPENAI_API_KEY
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     resp = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": DRAFT_PROMPT.format(keywords=", ".join(kws), article=text[:6000])}],
@@ -127,7 +129,8 @@ def draft_summary(kws: list[str], text: str) -> str:
     return resp.choices[0].message.content.strip()
 
 def refine_summary(draft: str) -> str:
-    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    from config import OPENAI_API_KEY
+    client = openai.OpenAI(api_key=OPENAI_API_KEY)
     for _ in range(3):
         resp = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -150,13 +153,13 @@ def summarize(entry):
 
 # ---------- Main ----------
 def run(limit=3):
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
+    from config import OPENAI_API_KEY
+    if not OPENAI_API_KEY:
         print("❌ OPENAI_API_KEY is not set!")
         print("Add the following to your .env file:")
         print("OPENAI_API_KEY=your-api-key-here")
         return
-    print("== Starting: ", api_key[:10], "...")
+    print("== Starting: ", OPENAI_API_KEY[:10], "...")
     print("🎯 심리학 관련 뉴스만 필터링합니다...")
     
     items = []

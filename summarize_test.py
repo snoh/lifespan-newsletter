@@ -5,8 +5,10 @@ import os
 # 환경 변수 불러오기
 load_dotenv()
 
+from config import OPENAI_API_KEY
+
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=OPENAI_API_KEY
 )
 
 # GPT 요청

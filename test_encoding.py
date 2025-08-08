@@ -5,8 +5,9 @@ import os
 # 환경 변수 불러오기
 load_dotenv()
 
-# API 키 확인
-api_key = os.getenv("OPENAI_API_KEY")
+# API 키 확인 (config에서 가져오기)
+from config import OPENAI_API_KEY
+api_key = OPENAI_API_KEY
 
 print("=== API 키 분석 ===")
 print(f"API 키 길이: {len(api_key) if api_key else 0}")
