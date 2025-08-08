@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from config import OPENAI_API_KEY, DEFAULT_ARTICLE_LIMIT
 from rss_reader import RSSReader
 from summarizer import ArticleSummarizer
+from content_extractor import ContentExtractor
+from html_exporter import HTMLExporter
 
 # 환경 변수 로드
 load_dotenv()
@@ -35,6 +37,8 @@ class NewsletterSummarySystem:
         
         self.rss_reader = RSSReader()
         self.summarizer = ArticleSummarizer(self.api_key)
+        self.content_extractor = ContentExtractor()
+        self.html_exporter = HTMLExporter()
         
         logger.info("뉴스레터 요약 시스템 초기화 완료")
     
@@ -66,12 +70,33 @@ class NewsletterSummarySystem:
                         source=article['source']
                     )
                     
-                    # 추가 정보 추가
-                    summary_result.update({
-                        'link': article.get('link', ''),
-                        'published': article.get('published', ''),
-                        'category': article.get('category', '')
-                    })
+                    # 이미지와 참고문헌 추출
+                    article_url = article.get('link', '')
+                    if article_url:
+                        logger.info(f"콘텐츠 메타데이터 추출 시작: {article_url}")
+                        metadata = self.content_extractor.extract_content_metadata(article_url)
+                        
+                        # 추가 정보 추가
+                        summary_result.update({
+                            'link': article_url,
+                            'published': article.get('published', ''),
+                            'category': article.get('category', ''),
+                            'images': metadata.get('images', []),
+                            'references': metadata.get('references', []),
+                            'author': metadata.get('author', ''),
+                            'description': metadata.get('description', '')
+                        })
+                    else:
+                        # URL이 없는 경우 기본 정보만 추가
+                        summary_result.update({
+                            'link': '',
+                            'published': article.get('published', ''),
+                            'category': article.get('category', ''),
+                            'images': [],
+                            'references': [],
+                            'author': '',
+                            'description': ''
+                        })
                     
                     summaries.append(summary_result)
                     
@@ -83,6 +108,17 @@ class NewsletterSummarySystem:
                     continue
             
             logger.info(f"뉴스레터 요약 완료: {len(summaries)}개 기사 처리됨")
+            
+            # HTML 파일로 내보내기
+            if summaries:
+                try:
+                    html_filepath = self.html_exporter.export_summaries_to_html(summaries)
+                    logger.info(f"HTML 파일 생성 완료: {html_filepath}")
+                    print(f"\n🌐 HTML 파일이 생성되었습니다: {html_filepath}")
+                    print("   브라우저에서 열어서 이미지와 함께 확인하세요!")
+                except Exception as e:
+                    logger.error(f"HTML 파일 생성 실패: {e}")
+            
             return summaries
             
         except Exception as e:
@@ -97,7 +133,31 @@ class NewsletterSummarySystem:
         print(f"📰 출처: {summary['source']}")
         print(f"🔗 링크: {summary['link']}")
         print(f"📅 발행일: {summary.get('published', 'N/A')}")
+        if summary.get('author'):
+            print(f"✍️  저자: {summary['author']}")
         print(f"🏷️  키워드: {', '.join(summary['keywords'])}")
+        
+        # 이미지 정보 출력
+        images = summary.get('images', [])
+        if images:
+            print(f"\n🖼️  이미지 ({len(images)}개):")
+            for i, img in enumerate(images[:3], 1):  # 최대 3개만 표시
+                print(f"  {i}. {img['url']}")
+                if img.get('alt'):
+                    print(f"     설명: {img['alt']}")
+            if len(images) > 3:
+                print(f"     ... 외 {len(images) - 3}개 더")
+        
+        # 참고문헌 정보 출력
+        references = summary.get('references', [])
+        if references:
+            print(f"\n📚 참고문헌 ({len(references)}개):")
+            for i, ref in enumerate(references[:3], 1):  # 최대 3개만 표시
+                print(f"  {i}. {ref['text']}")
+                print(f"     링크: {ref['url']}")
+            if len(references) > 3:
+                print(f"     ... 외 {len(references) - 3}개 더")
+        
         print(f"\n📝 요약:")
         print(f"{summary['summary']}")
         print(f"\n⏰ 처리시간: {summary['timestamp']}")

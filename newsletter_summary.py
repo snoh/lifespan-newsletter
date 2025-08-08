@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env file
 
 # OpenAI 클라이언트 초기화 (최신 API)
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# client는 함수 내에서 필요할 때 생성
 
 FEEDS = [
     "https://feeds.npr.org/1126/rss.xml",                # NPR Mental Health
@@ -108,6 +108,7 @@ def is_psychology_related(entry) -> bool:
     return False
 
 def extract_keywords(text: str) -> list[str]:
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     resp = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": KW_PROMPT.format(article=text[:6000])}],
@@ -117,6 +118,7 @@ def extract_keywords(text: str) -> list[str]:
     return kws[:5]
 
 def draft_summary(kws: list[str], text: str) -> str:
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     resp = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": DRAFT_PROMPT.format(keywords=", ".join(kws), article=text[:6000])}],
@@ -125,6 +127,7 @@ def draft_summary(kws: list[str], text: str) -> str:
     return resp.choices[0].message.content.strip()
 
 def refine_summary(draft: str) -> str:
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     for _ in range(3):
         resp = client.chat.completions.create(
             model="gpt-4o-mini",

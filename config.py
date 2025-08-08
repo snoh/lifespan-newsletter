@@ -91,4 +91,6 @@ SPEC_FILE = Path("summary_spec.md")
 LOG_FILE = Path("summary.log")
 
 # 환경 변수
+from dotenv import load_dotenv
+load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") 
