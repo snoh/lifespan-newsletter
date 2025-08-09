@@ -471,7 +471,7 @@
   </div>
 
   <style>
-  /* FAB */
+  /* ===== Subscribe FAB ===== */
   .lsn-subscribe-fab{
     position:fixed; right:20px; bottom:22px; width:56px; height:56px;
     display:grid; place-items:center; border-radius:50%;
@@ -482,11 +482,20 @@
   }
   .lsn-subscribe-fab:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.35); }
 
-  /* Modal */
-  .lsn-sub-modal{
-    position:fixed; inset:0; display:grid; place-items:center;
-    background:rgba(0,0,0,.45); z-index:10001;
+  /* ===== Modal Overlay ===== */
+  .lsn-sub-modal{ 
+    display:none;               /* 기본: 보이지 않음 */
+    position:fixed; inset:0; 
+    place-items:center; 
+    background:rgba(0,0,0,.45); 
+    z-index:10001;
+    pointer-events:none;        /* 기본: 클릭 막지 않음 */
   }
+  .lsn-sub-modal[open]{ 
+    display:grid;               /* open 속성일 때만 표시 */
+    pointer-events:auto; 
+  }
+
   .lsn-sub-card{
     width:min(92vw, 420px); border-radius:16px; padding:22px;
     background:var(--card,#0f1521); color:var(--text,#e6eaf2);
@@ -508,47 +517,48 @@
   .lsn-sub-card button.lsn-ghost{ background:transparent; color:inherit; }
   .lsn-sub-legal{ margin-top:8px; opacity:.7; font-size:12px; }
 
-  /* 안전장치: 이 페이지에 다른 오버레이가 있어도 클릭 가능 */
-  .lsn-sub-modal, .lsn-subscribe-fab { pointer-events:auto; }
+  /* 스크롤 잠금 (모달 열릴 때만) */
+  .lsn-no-scroll, .lsn-no-scroll body{ overflow:hidden; }
   </style>
 
   <script>
   (function(){
     const fab = document.querySelector('.lsn-subscribe-fab');
     const modal = document.getElementById('lsn-subscribe-modal');
-    const card = modal?.querySelector('.lsn-sub-card');
     const closeBtn = document.getElementById('lsn-close-btn');
 
-    // 초기 상태 보장 (새로고침 없이도 정상 동작)
     function openSubModal(){
       if (!modal) return;
-      modal.hidden = false;
-      // open 상태 attribute로 트랜지션 제어
-      requestAnimationFrame(()=> modal.setAttribute('open',''));
+      modal.hidden = false;          // 1) hidden 제거
+      requestAnimationFrame(()=>{    // 2) 다음 프레임에 open 추가 (트랜지션 안정화)
+        modal.setAttribute('open','');
+        document.documentElement.classList.add('lsn-no-scroll');
+      });
     }
     function closeSubModal(){
       if (!modal) return;
-      modal.removeAttribute('open');
-      // 애니메이션 후 hidden
-      setTimeout(()=> modal.hidden = true, 150);
+      modal.removeAttribute('open'); // 1) open 제거
+      setTimeout(()=>{               // 2) 애니메이션 끝나면 hidden 적용
+        modal.hidden = true;
+        document.documentElement.classList.remove('lsn-no-scroll');
+      }, 150);
     }
 
-    // 전역에 노출 (혹시 기존 코드에서 호출한다면)
+    // 전역 노출(기존 코드 호환)
     window.openSubModal = openSubModal;
     window.closeSubModal = closeSubModal;
 
-    // 바인딩 (SPA가 아니어도 확실하게 DOM 준비 후)
+    // 초기 상태 강제: 혹시 build/캐시 꼬여 open이 박혀 있으면 끈다
+    if (modal){
+      modal.hidden = true;
+      modal.removeAttribute('open');
+    }
+
     document.addEventListener('DOMContentLoaded', ()=>{
       fab?.addEventListener('click', openSubModal, {passive:true});
       closeBtn?.addEventListener('click', closeSubModal, {passive:true});
-      // 바깥(오버레이) 클릭시 닫기
-      modal?.addEventListener('click', (e)=>{
-        if (e.target === modal) closeSubModal();
-      });
-      // Esc로 닫기
-      document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape' && !modal.hidden) closeSubModal();
-      });
+      modal?.addEventListener('click', (e)=>{ if (e.target === modal) closeSubModal(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) closeSubModal(); });
     });
   })();
   </script>
