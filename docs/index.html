@@ -559,11 +559,17 @@
       });
     }
     function closeSubModal(){
-      if (!modal) return;
+      console.log('closeSubModal called');
+      if (!modal) {
+        console.log('Modal not found');
+        return;
+      }
+      console.log('Closing modal...');
       modal.removeAttribute('open'); // 1) open 제거
       setTimeout(()=>{               // 2) 애니메이션 끝나면 hidden 적용
         modal.hidden = true;
         document.documentElement.classList.remove('lsn-no-scroll');
+        console.log('Modal closed and hidden');
       }, 150);
     }
 
@@ -577,12 +583,42 @@
       modal.removeAttribute('open');
     }
 
-    document.addEventListener('DOMContentLoaded', ()=>{
-      fab?.addEventListener('click', openSubModal, {passive:true});
-      closeBtn?.addEventListener('click', closeSubModal, {passive:true});
-      modal?.addEventListener('click', (e)=>{ if (e.target === modal) closeSubModal(); });
-      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) closeSubModal(); });
-    });
+    // DOM이 준비되면 이벤트 바인딩 (즉시 실행 또는 DOMContentLoaded)
+    function bindEvents(){
+      console.log('Binding events...', {fab, modal, closeBtn});
+      
+      if (fab) {
+        fab.addEventListener('click', openSubModal, {passive:true});
+        console.log('FAB click listener added');
+      }
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeSubModal, {passive:true});
+        console.log('Close button click listener added');
+      }
+      
+      if (modal) {
+        modal.addEventListener('click', (e)=>{ 
+          if (e.target === modal) {
+            console.log('Modal overlay clicked');
+            closeSubModal();
+          }
+        });
+      }
+      
+      document.addEventListener('keydown', (e)=>{ 
+        if (e.key === 'Escape' && modal && !modal.hidden) {
+          console.log('Escape key pressed');
+          closeSubModal();
+        }
+      });
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindEvents);
+    } else {
+      bindEvents(); // DOM이 이미 준비됨
+    }
   })();
   </script>
 
