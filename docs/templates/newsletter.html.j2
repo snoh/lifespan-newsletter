@@ -355,6 +355,7 @@
   <!-- === LSN Subscribe (template canonical) === -->
   <button class="lsn-subscribe-fab" type="button" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/></svg>
+    <span class="lsn-fab-text">뉴스레터 구독</span>
   </button>
 
   <div id="lsn-subscribe-modal" class="lsn-sub-modal" role="dialog" aria-modal="true" aria-labelledby="lsn-sub-ttl" hidden>
@@ -373,8 +374,11 @@
   </div>
 
   <style>
-  .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:transform .15s,box-shadow .2s}
+  .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:28px;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:width .3s ease,border-radius .3s ease,transform .15s,box-shadow .2s;overflow:hidden;white-space:nowrap}
   .lsn-subscribe-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
+  .lsn-subscribe-fab.expanded{width:180px;border-radius:28px;padding:0 20px}
+  .lsn-fab-text{opacity:0;transform:translateX(-10px);transition:opacity .3s ease .1s,transform .3s ease .1s;font-size:14px;font-weight:600;margin-left:4px}
+  .lsn-subscribe-fab.expanded .lsn-fab-text{opacity:1;transform:translateX(0)}
   .lsn-sub-modal{display:none;position:fixed;inset:0;place-items:center;background:rgba(0,0,0,.45);z-index:10001;pointer-events:none}
   .lsn-sub-modal[open]{display:grid;pointer-events:auto}
   .lsn-sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:var(--card,#0f1521);color:var(--text,#e6eaf2);box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transform:translateY(6px);opacity:0;transition:opacity .15s,transform .15s;position:relative;z-index:10002;pointer-events:auto}
@@ -420,11 +424,35 @@
     }
     window.openSubModal = openSubModal; window.closeSubModal = closeSubModal;
 
+    // 스크롤 기반 FAB 확장 기능
+    function handleFabExpansion() {
+      if (!fab) return;
+      
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      
+      // 페이지의 70% 이상 스크롤하면 확장
+      if (scrollPercent > 70) {
+        fab.classList.add('expanded');
+      } else {
+        fab.classList.remove('expanded');
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', ()=>{
       fab?.addEventListener('click', (e)=>{ e.preventDefault(); openSubModal(); }, {passive:true});
       closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); closeSubModal(); }, {passive:true});
       modal?.addEventListener('click', (e)=>{ if (e.target === modal) closeSubModal(); });
       document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) closeSubModal(); });
+      
+      // 스크롤 이벤트 리스너 추가 (throttled)
+      let scrollTimeout;
+      window.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(handleFabExpansion, 10);
+      }, { passive: true });
+      
+      // 초기 상태 설정
+      handleFabExpansion();
 
       // 자동 오픈 금지(필요시 ?subscribe=1 에서만)
       const q = new URLSearchParams(location.search);
