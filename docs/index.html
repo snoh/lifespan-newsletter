@@ -448,39 +448,111 @@
   
   </script>
 
-  <button class="subscribe-fab" aria-haspopup="dialog" aria-controls="subscribe-modal" onclick="openSubModal()" aria-label="구독 신청">
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/></svg>
+  <!-- === Subscribe FAB + Modal (lifespan-newsletter) === -->
+  <button class="lsn-subscribe-fab" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/>
+    </svg>
   </button>
-  <div id="subscribe-modal" class="sub-modal" role="dialog" aria-modal="true" aria-labelledby="sub-ttl" hidden>
-    <div class="sub-card">
-      <h3 id="sub-ttl">뉴스레터 구독</h3>
+
+  <div id="lsn-subscribe-modal" class="lsn-sub-modal" role="dialog" aria-modal="true" aria-labelledby="lsn-sub-ttl" hidden>
+    <div class="lsn-sub-card" role="document">
+      <h3 id="lsn-sub-ttl">뉴스레터 구독</h3>
       <p>이메일을 남겨주시면 새 글이 발행될 때 받아보실 수 있어요.</p>
-      <form id="sub-form" method="POST" action="https://formspree.io/f/YOUR_FORMSPREE_ID">
+      <form id="lsn-sub-form" method="POST" action="https://formspree.io/f/xjkojbjd">
         <input type="email" name="email" placeholder="you@example.com" required />
-        <div class="sub-actions">
+        <div class="lsn-sub-actions">
           <button type="submit">구독하기</button>
-          <button type="button" class="ghost" onclick="closeSubModal()">닫기</button>
+          <button type="button" class="lsn-ghost" id="lsn-close-btn">닫기</button>
         </div>
       </form>
-      <p class="sub-legal">제출 시 개인정보 처리방침에 동의합니다.</p>
+      <p class="lsn-sub-legal">제출 시 개인정보 처리방침에 동의합니다.</p>
     </div>
   </div>
+
   <style>
-  .subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;transition:transform .15s,box-shadow .2s}
-  .subscribe-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
-  .sub-modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);z-index:10001}
-  .sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:#0f1521;color:#e6eaf2;box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08)}
-  .sub-card form{display:grid;gap:10px;margin-top:10px}
-  .sub-card input{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c111b;color:inherit}
-  .sub-actions{display:flex;gap:10px}
-  .sub-card button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,#7c89ff,#b07cff);color:#fff;cursor:pointer}
-  .sub-card button.ghost{background:transparent;color:inherit}
-  .sub-legal{margin-top:8px;opacity:.7;font-size:12px}
+  /* FAB */
+  .lsn-subscribe-fab{
+    position:fixed; right:20px; bottom:22px; width:56px; height:56px;
+    display:grid; place-items:center; border-radius:50%;
+    color:#fff; background:linear-gradient(135deg, var(--brand,#7c89ff), var(--brand-2,#b07cff));
+    box-shadow:0 10px 24px rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.1);
+    text-decoration:none; z-index:10000; cursor:pointer;
+    transition:transform .15s, box-shadow .2s;
+  }
+  .lsn-subscribe-fab:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.35); }
+
+  /* Modal */
+  .lsn-sub-modal{
+    position:fixed; inset:0; display:grid; place-items:center;
+    background:rgba(0,0,0,.45); z-index:10001;
+  }
+  .lsn-sub-card{
+    width:min(92vw, 420px); border-radius:16px; padding:22px;
+    background:var(--card,#0f1521); color:var(--text,#e6eaf2);
+    box-shadow:0 20px 60px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08);
+    transform:translateY(6px); opacity:0; transition:opacity .15s ease, transform .15s ease;
+  }
+  .lsn-sub-modal[open] .lsn-sub-card{ opacity:1; transform:translateY(0); }
+
+  .lsn-sub-card form{ display:grid; gap:10px; margin-top:10px; }
+  .lsn-sub-card input{
+    padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
+    background:#0c111b; color:inherit; width:100%;
+  }
+  .lsn-sub-actions{ display:flex; gap:10px; }
+  .lsn-sub-card button{
+    padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+    background:linear-gradient(135deg, var(--brand,#7c89ff), var(--brand-2,#b07cff)); color:#fff; cursor:pointer;
+  }
+  .lsn-sub-card button.lsn-ghost{ background:transparent; color:inherit; }
+  .lsn-sub-legal{ margin-top:8px; opacity:.7; font-size:12px; }
+
+  /* 안전장치: 이 페이지에 다른 오버레이가 있어도 클릭 가능 */
+  .lsn-sub-modal, .lsn-subscribe-fab { pointer-events:auto; }
   </style>
+
   <script>
-  function openSubModal(){document.getElementById('subscribe-modal').hidden=false}
-  function closeSubModal(){document.getElementById('subscribe-modal').hidden=true}
+  (function(){
+    const fab = document.querySelector('.lsn-subscribe-fab');
+    const modal = document.getElementById('lsn-subscribe-modal');
+    const card = modal?.querySelector('.lsn-sub-card');
+    const closeBtn = document.getElementById('lsn-close-btn');
+
+    // 초기 상태 보장 (새로고침 없이도 정상 동작)
+    function openSubModal(){
+      if (!modal) return;
+      modal.hidden = false;
+      // open 상태 attribute로 트랜지션 제어
+      requestAnimationFrame(()=> modal.setAttribute('open',''));
+    }
+    function closeSubModal(){
+      if (!modal) return;
+      modal.removeAttribute('open');
+      // 애니메이션 후 hidden
+      setTimeout(()=> modal.hidden = true, 150);
+    }
+
+    // 전역에 노출 (혹시 기존 코드에서 호출한다면)
+    window.openSubModal = openSubModal;
+    window.closeSubModal = closeSubModal;
+
+    // 바인딩 (SPA가 아니어도 확실하게 DOM 준비 후)
+    document.addEventListener('DOMContentLoaded', ()=>{
+      fab?.addEventListener('click', openSubModal, {passive:true});
+      closeBtn?.addEventListener('click', closeSubModal, {passive:true});
+      // 바깥(오버레이) 클릭시 닫기
+      modal?.addEventListener('click', (e)=>{
+        if (e.target === modal) closeSubModal();
+      });
+      // Esc로 닫기
+      document.addEventListener('keydown', (e)=>{
+        if (e.key === 'Escape' && !modal.hidden) closeSubModal();
+      });
+    });
+  })();
   </script>
+  <!-- === /Subscribe FAB + Modal === -->
 
 </body>
 </html>
