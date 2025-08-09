@@ -2,433 +2,279 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>심리학 뉴스레터 요약 - 2025년 08월 08일</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-        .header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-        }
-        .summary-card {
-            margin: 20px;
-            padding: 25px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .summary-title {
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        .meta-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .meta-label {
-            font-weight: 600;
-            color: #495057;
-            min-width: 80px;
-        }
-        .keywords {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
-        }
-        .keyword {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-        .images-section {
-            margin: 20px 0;
-        }
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-        .image-item {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            background: white;
-        }
-        .image-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        .image-caption {
-            padding: 10px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .references-section {
-            margin: 20px 0;
-        }
-        .reference-item {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            border-left: 4px solid #007bff;
-        }
-        .reference-link {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .reference-link:hover {
-            text-decoration: underline;
-        }
-        .summary-text {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            border-left: 4px solid #28a745;
-            margin: 20px 0;
-            font-size: 1.1em;
-            line-height: 1.7;
-        }
-        .tone-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .tone-positive {
-            background: #d4edda;
-            color: #155724;
-        }
-        .tone-neutral {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        .tone-negative {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            border-top: 1px solid #eee;
-        }
-        @media (max-width: 768px) {
-            .meta-info {
-                grid-template-columns: 1fr;
-            }
-            .image-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿</title>
+  <meta name="description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
+  <style>
+    /* =========================
+       Design Tokens
+    ========================= */
+    :root {
+      --bg: #0b0f16;
+      --card: #0f1521;
+      --card-2: #111827;
+      --text: #e6eaf2;
+      --muted: #9aa4b2;
+      --brand: #7c89ff;
+      --brand-2: #b07cff;
+      --ok: #34d399;
+      --warn: #f59e0b;
+      --bad: #f87171;
+      --ring: 0 0 0 1px rgba(124, 137, 255, 0.35), 0 10px 30px rgba(124, 137, 255, 0.12);
+      --radius: 16px;
+      --shadow-1: 0 10px 30px rgba(0,0,0,.25);
+      --shadow-2: 0 20px 60px rgba(0,0,0,.35);
+      --grid: minmax(280px, 1fr);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --card-2: #ffffff;
+        --text: #10131a;
+        --muted: #556070;
+        --brand: #5562ff;
+        --brand-2: #8c5bff;
+        --ok: #059669;
+        --warn: #b45309;
+        --bad: #b91c1c;
+        --ring: 0 0 0 1px rgba(85, 98, 255, 0.25), 0 10px 30px rgba(85, 98, 255, 0.10);
+        --shadow-1: 0 8px 24px rgba(16,19,26,.10);
+        --shadow-2: 0 20px 60px rgba(16,19,26,.12);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      color: var(--text);
+      background: radial-gradient(1400px 700px at 10% -10%, rgba(124,137,255,.2), transparent 40%),
+                  radial-gradient(1000px 600px at 110% 10%, rgba(176,124,255,.18), transparent 45%),
+                  var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================
+       Layout
+    ========================= */
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 72px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 32px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(124,137,255,.18), rgba(176,124,255,.14));
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-1);
+      border: 1px solid rgba(124,137,255,.25);
+    }
+    .hero h1 { margin: 0 0 6px; font-weight: 800; letter-spacing: -0.02em; font-size: clamp(28px, 5vw, 40px); }
+    .hero p { margin: 8px 0 0; color: var(--muted); font-weight: 500; }
+    .hero-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 9999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--text); font-size: 13px; font-weight: 600;
+    }
+    .chip svg { width: 16px; height: 16px; opacity: .9; }
+
+    /* =========================
+       Sections & Cards
+    ========================= */
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 18px; margin-top: 24px; }
+    .col { grid-column: span 12; }
+    @media (min-width: 880px) { .col.lg-6 { grid-column: span 6; } }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-1);
+      overflow: clip;
+    }
+    .card-hd { padding: 22px 22px 12px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .card-ttl { margin: 0; font-size: clamp(18px, 2.2vw, 22px); letter-spacing: -0.01em; }
+    .card-sub { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+    .card-bd { padding: 18px 22px 22px; }
+
+    .meta {
+      display: grid; gap: 10px; margin: 10px 0 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .meta .item { display: grid; grid-template-columns: 82px 1fr; gap: 10px; align-items: center; }
+    .meta .label { color: var(--muted); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .meta .value a { color: var(--brand); text-decoration: none; border-bottom: 1px dashed rgba(124,137,255,.35); }
+    .meta .value a:hover { filter: brightness(1.2); }
+
+    .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .kw {
+      padding: 6px 10px; border-radius: 10px; font-size: 12px; font-weight: 700;
+      background: linear-gradient(180deg, rgba(124,137,255,.15), rgba(176,124,255,.15));
+      border: 1px solid rgba(124,137,255,.30);
+      color: var(--text);
+    }
+
+    .images { margin-top: 16px; }
+    .image-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .image {
+      position: relative; border-radius: 12px; overflow: hidden; background: #0c111b;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .image img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .image figcaption { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+
+    .refs { display: grid; gap: 10px; }
+    .ref {
+      padding: 12px 12px; border-radius: 12px; background: rgba(255,255,255,.04);
+      border: 1px dashed rgba(124,137,255,.35);
+    }
+    .ref a { color: var(--brand); text-decoration: none; }
+
+    .summary {
+      position: relative; margin-top: 12px; padding: 18px; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(52, 211, 153, .12), rgba(52, 211, 153, .08));
+      border: 1px solid rgba(52, 211, 153, .35);
+    }
+    .badge { font-size: 12px; padding: 5px 10px; border-radius: 999px; font-weight: 800; display: inline-block; }
+    .b-pos { background: rgba(52, 211, 153,.18); color: #10b981; border: 1px solid rgba(52, 211, 153,.35); }
+    .b-neu { background: rgba(59, 130, 246,.18); color: #3b82f6; border: 1px solid rgba(59, 130, 246,.35); }
+    .b-neg { background: rgba(248, 113, 113,.18); color: #ef4444; border: 1px solid rgba(248, 113, 113,.35); }
+
+    .footer { margin-top: 36px; color: var(--muted); text-align: center; }
+
+    /* Subtle hover lift for cards */
+    .card { transition: transform .2s ease, box-shadow .2s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+
+    /* Print styles */
+    @media print {
+      body { background: #fff; color: #000; }
+      .hero { border: none; background: #fff; box-shadow: none; }
+      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+      .wrap { padding: 0; }
+      .badge, .chip { border: 1px solid #999 !important; color: #000 !important; }
+      a { color: #000 !important; text-decoration: underline !important; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🧠 심리학 뉴스레터 요약</h1>
-            <p>NPR & ScienceDaily 심리학 관련 뉴스 자동 요약</p>
-            <p>생성일: 2025년 08월 08일 20:41</p>
-        </div>
+  <div class="wrap">
+    <!-- HERO -->
+    <header class="hero" role="banner">
+      <h1>🧠 심리학 뉴스레터 요약</h1>
+      <p>NPR & ScienceDaily 심리학 관련 뉴스 자동 요약</p>
+      <div class="hero-meta">
+        <span class="chip" title="생성일">
+          <!-- calendar icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 3v3M17 3v3M4 11h16M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          생성일: <strong>2025년 08월 08일 20:41</strong>
+        </span>
+        <span class="chip" title="버전">v1.0 • Premium</span>
+      </div>
+    </header>
 
-        <div class="summary-card">
-            <h2 class="summary-title">1. Why do some people's memories stay sharp as they age?</h2>
-            
-            <div class="meta-info">
-                <div class="meta-item">
-                    <span class="meta-label">📰 출처:</span>
-                    <span>NPR Health</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">📅 발행일:</span>
-                    <span>Fri, 08 Aug 2025 03:00:00 -0400</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">🔗 링크:</span>
-                    <a href="https://www.npr.org/2025/08/08/nx-s1-5494697/aging-memory-alzheimers-dementia" target="_blank" class="reference-link">원문 보기</a>
-                </div>
-                <div class="meta-item"><span class="meta-label">✍️ 저자:</span><span>August 8, 20253:00 AM ETByRegina G. Barber,Rachel Carlson,Michelle Aslam,Rebecca Ramirez,Christopher Intagliata,Ailsa Chang</span></div>
-            </div>
-            
-            <div class="keywords">
-                <span class="keyword">SuperAger</span><span class="keyword">brain</span><span class="keyword">Northwestern University</span><span class="keyword">memory abilities</span><span class="keyword">aging</span>
-            </div>
-        
-            <div class="images-section">
-                <h3>🖼️ 관련 이미지 (15개)</h3>
-                <div class="image-grid">
-            
-                    <div class="image-item">
-                        <img src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" alt="NPR logo" onerror="this.style.display='none'">
-                        <div class="image-caption">NPR logo</div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/morning-edition.jpg" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/assets/img/2019/02/26/we_otherentitiestemplatesat_sq-cbde87a2fa31b01047441e6f34d2769b0287bcd4-s100-c85.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/assets/img/2019/02/26/we_otherentitiestemplatesun_sq-4a03b35e7e5adfa446aec374523a578d54dc9bf5-s100-c85.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/all-things-considered.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/fresh-air.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                </div>
-            </div>
-            
-            <div class="references-section">
-                <h3>📚 참고문헌 (1개)</h3>
-            
-                <div class="reference-item">
-                    <div><strong>Keyboard shortcuts for audio player</strong></div>
-                    <a href="https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player" target="_blank" class="reference-link">https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player</a>
-                </div>
-                
-            </div>
-            
-            <div class="summary-text">
-                Researchers at Northwestern University have identified a group of older adults called "SuperAgers," who retain remarkable memory abilities even after the age of 80. Unlike most individuals, SuperAgers show a slower decline in brain function, allowing them to think and remember like those in their 50s or 60s, which offers valuable insights into brain health and cognitive preservation. This research, published in the journal Alzheimer's & Dementia, could lead to improved memory strategies for aging populations .
-                <span class="tone-badge tone-positive">Positive</span>
-            </div>
+    <!-- ARTICLE 1 -->
+    <article class="card" aria-labelledby="art-1-title">
+      <div class="card-hd">
+        <h2 id="art-1-title" class="card-ttl">1) Why do some people's memories stay sharp as they age?</h2>
+        <p class="card-sub">노화에도 기억력이 선명한 'SuperAger'의 비밀</p>
+      </div>
+      <div class="card-bd">
+        <div class="meta">
+          <div class="item"><span class="label">출처</span><span class="value">NPR Health</span></div>
+          <div class="item"><span class="label">발행일</span><span class="value">Fri, 08 Aug 2025 03:00:00 -0400</span></div>
+          <div class="item"><span class="label">링크</span><span class="value"><a href="https://www.npr.org/2025/08/08/nx-s1-5494697/aging-memory-alzheimers-dementia" target="_blank" rel="noopener">원문 보기</a></span></div>
+          <div class="item"><span class="label">저자</span><span class="value">Regina G. Barber 외</span></div>
         </div>
-        
-        <div class="summary-card">
-            <h2 class="summary-title">2. Study finds female mountain gorillas prefer to join 'buddies'</h2>
-            
-            <div class="meta-info">
-                <div class="meta-item">
-                    <span class="meta-label">📰 출처:</span>
-                    <span>NPR Health</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">📅 발행일:</span>
-                    <span>Wed, 06 Aug 2025 04:07:54 -0400</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">🔗 링크:</span>
-                    <a href="https://www.npr.org/2025/08/06/nx-s1-5493213/female-mountain-gorilla-friends-relationships" target="_blank" class="reference-link">원문 보기</a>
-                </div>
-                <div class="meta-item"><span class="meta-label">✍️ 저자:</span><span>August 6, 20254:07 AM ETHeard onMorning EditionNell Greenfieldboyce</span></div>
-            </div>
-            
-            <div class="keywords">
-                <span class="keyword">female gorillas</span><span class="keyword">social group</span><span class="keyword">relationships</span><span class="keyword">long-term</span><span class="keyword">new study</span>
-            </div>
-        
-            <div class="images-section">
-                <h3>🖼️ 관련 이미지 (16개)</h3>
-                <div class="image-grid">
-            
-                    <div class="image-item">
-                        <img src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" alt="NPR logo" onerror="this.style.display='none'">
-                        <div class="image-caption">NPR logo</div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/morning-edition.jpg" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/assets/img/2019/02/26/we_otherentitiestemplatesat_sq-cbde87a2fa31b01047441e6f34d2769b0287bcd4-s100-c85.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/assets/img/2019/02/26/we_otherentitiestemplatesun_sq-4a03b35e7e5adfa446aec374523a578d54dc9bf5-s100-c85.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/all-things-considered.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://media.npr.org/chrome/programs/logos/fresh-air.png" alt="" onerror="this.style.display='none'">
-                        <div class="image-caption"></div>
-                    </div>
-                
-                </div>
-            </div>
-            
-            <div class="references-section">
-                <h3>📚 참고문헌 (5개)</h3>
-            
-                <div class="reference-item">
-                    <div><strong>Keyboard shortcuts for audio player</strong></div>
-                    <a href="https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player" target="_blank" class="reference-link">https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>Listen·3:26</strong></div>
-                    <a href="https://ondemand.npr.org/anon.npr-mp3/npr/me/2025/08/20250806_me_study_finds_female_mountain_gorillas_prefer_to_join_buddies.mp3?t=progseg&e=nx-s1-5456986&p=3&seg=7&d=206&size=3302340&sc=siteplayer&aw_0_1st.playerid=siteplayer" target="_blank" class="reference-link">https://ondemand.npr.org/anon.npr-mp3/npr/me/2025/08/20250806_me_study_finds_female_mountain_gorillas_prefer_to_join_buddies.mp3?t=progseg&e=nx-s1-5456986&p=3&seg=7&d=206&size=3302340&sc=siteplayer&aw_0_1st.playerid=siteplayer</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>Download</strong></div>
-                    <a href="https://ondemand.npr.org/anon.npr-mp3/npr/me/2025/08/20250806_me_study_finds_female_mountain_gorillas_prefer_to_join_buddies.mp3?t=progseg&e=nx-s1-5456986&p=3&seg=7&d=206&size=3302340&sc=siteplayer&aw_0_1st.playerid=siteplayer" target="_blank" class="reference-link">https://ondemand.npr.org/anon.npr-mp3/npr/me/2025/08/20250806_me_study_finds_female_mountain_gorillas_prefer_to_join_buddies.mp3?t=progseg&e=nx-s1-5456986&p=3&seg=7&d=206&size=3302340&sc=siteplayer&aw_0_1st.playerid=siteplayer</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>study</strong></div>
-                    <a href="https://doi.org/10.1098/rspb.2025.0223" target="_blank" class="reference-link">https://doi.org/10.1098/rspb.2025.0223</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>Victoire Martignac</strong></div>
-                    <a href="https://www.iea.uzh.ch/en/research/pseg/groupmembers.html" target="_blank" class="reference-link">https://www.iea.uzh.ch/en/research/pseg/groupmembers.html</a>
-                </div>
-                
-            </div>
-            
-            <div class="summary-text">
-                A new study shows that female gorillas prefer joining social groups where they can reconnect with old friends, emphasizing the importance of long-term relationships in their social lives. When moving to a new group, these gorillas often seek out other females they have lived with before, indicating that past bonds influence their present choices. Overall, the findings provide insight into the social dynamics of female gorillas and their strong connections with one another .
-                <span class="tone-badge tone-positive">Positive</span>
-            </div>
+        <div class="keywords" aria-label="키워드">
+          <span class="kw">SuperAger</span><span class="kw">Brain</span><span class="kw">Northwestern</span><span class="kw">Memory</span><span class="kw">Aging</span>
         </div>
-        
-        <div class="summary-card">
-            <h2 class="summary-title">3. Johns Hopkins scientists grow a mini human brain that lights up and connects like the real thing</h2>
-            
-            <div class="meta-info">
-                <div class="meta-item">
-                    <span class="meta-label">📰 출처:</span>
-                    <span>ScienceDaily Mind & Brain</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">📅 발행일:</span>
-                    <span>Mon, 04 Aug 2025 23:58:21 EDT</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-label">🔗 링크:</span>
-                    <a href="https://www.sciencedaily.com/releases/2025/08/250803233113.htm" target="_blank" class="reference-link">원문 보기</a>
-                </div>
-                
-            </div>
-            
-            <div class="keywords">
-                <span class="keyword">Scientists</span><span class="keyword">organoid</span><span class="keyword">human brain</span><span class="keyword">neural activity</span><span class="keyword">brain development</span>
-            </div>
-        
-            <div class="images-section">
-                <h3>🖼️ 관련 이미지 (2개)</h3>
-                <div class="image-grid">
-            
-                    <div class="image-item">
-                        <img src="https://www.sciencedaily.com/images/sd-logo.png" alt="ScienceDaily" onerror="this.style.display='none'">
-                        <div class="image-caption">ScienceDaily</div>
-                    </div>
-                
-                    <div class="image-item">
-                        <img src="https://www.sciencedaily.com/images/1920/multi-region-brain-organoid.webp" alt="Lab-Grown Brain Lights Up With Neural Activity" onerror="this.style.display='none'">
-                        <div class="image-caption">Lab-Grown Brain Lights Up With Neural Activity</div>
-                    </div>
-                
-                </div>
-            </div>
-            
-            <div class="references-section">
-                <h3>📚 참고문헌 (11개)</h3>
-            
-                <div class="reference-item">
-                    <div><strong>Alzheimer's Research</strong></div>
-                    <a href="https://www.sciencedaily.com/news/health_medicine/alzheimer's/" target="_blank" class="reference-link">https://www.sciencedaily.com/news/health_medicine/alzheimer's/</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>Materials</strong></div>
-                    <a href="https://hub.jhu.edu/2025/07/25/hopkins-researchers-develop-whole-brain-organoid/" target="_blank" class="reference-link">https://hub.jhu.edu/2025/07/25/hopkins-researchers-develop-whole-brain-organoid/</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>10.1002/advs.202503768</strong></div>
-                    <a href="http://dx.doi.org/10.1002/advs.202503768" target="_blank" class="reference-link">http://dx.doi.org/10.1002/advs.202503768</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>MLA</strong></div>
-                    <a href="https://www.sciencedaily.com/releases/2025/08/250803233113.htm#citation_mla" target="_blank" class="reference-link">https://www.sciencedaily.com/releases/2025/08/250803233113.htm#citation_mla</a>
-                </div>
-                
-                <div class="reference-item">
-                    <div><strong>APA</strong></div>
-                    <a href="https://www.sciencedaily.com/releases/2025/08/250803233113.htm#citation_apa" target="_blank" class="reference-link">https://www.sciencedaily.com/releases/2025/08/250803233113.htm#citation_apa</a>
-                </div>
-                
-            </div>
-            
-            <div class="summary-text">
-                Scientists at Johns Hopkins have developed a revolutionary organoid that mimics a human brain, complete with basic blood vessels and neural activity, known as a "multi-region brain organoid." This innovation connects different brain areas and produces electrical signals, enabling researchers to study early brain development and understand disorders like autism and schizophrenia. The research presents new opportunities for testing treatments that were challenging to explore with animal models, potentially leading to important insights into human brain health and disease .
-                <span class="tone-badge tone-positive">Positive</span>
-            </div>
+        <section class="images" aria-label="관련 이미지">
+          <div class="image-grid">
+            <figure class="image"><img src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" alt="NPR logo" onerror="this.closest('figure').style.display='none'"/><figcaption>NPR logo</figcaption></figure>
+            <figure class="image"><img src="https://media.npr.org/chrome/programs/logos/morning-edition.jpg" alt="Morning Edition" onerror="this.closest('figure').style.display='none'"/><figcaption>Morning Edition</figcaption></figure>
+          </div>
+        </section>
+        <section class="refs" aria-label="참고문헌">
+          <div class="ref"><strong>Keyboard shortcuts for audio player</strong> — <a href="https://help.npr.org/contact/s/article?name=what-are-the-keyboard-shortcuts-for-using-the-npr-org-audio-player" target="_blank" rel="noopener">링크</a></div>
+        </section>
+        <section class="summary" aria-label="요약">
+          <span class="badge b-pos">Positive</span>
+          <p style="margin:10px 0 0">Northwestern University 연구진은 80세 이후에도 예외적으로 뛰어난 기억력을 보유한 'SuperAgers'를 확인했습니다. 이들의 뇌 기능 저하는 평균보다 느리며, 50–60대 수준의 인지 성능을 보이는 사례가 보고되었습니다. 해당 연구(Alzheimer's & Dementia 게재)는 고령층 기억 보존 전략 개발에 시사점을 제공합니다.</p>
+        </section>
+      </div>
+    </article>
+
+    <!-- ARTICLE 2 -->
+    <article class="card" aria-labelledby="art-2-title" style="margin-top:18px;">
+      <div class="card-hd">
+        <h2 id="art-2-title" class="card-ttl">2) Study finds female mountain gorillas prefer to join 'buddies'</h2>
+        <p class="card-sub">암컷 고릴라의 '오래된 친구 그룹' 선호</p>
+      </div>
+      <div class="card-bd">
+        <div class="meta">
+          <div class="item"><span class="label">출처</span><span class="value">NPR Health</span></div>
+          <div class="item"><span class="label">발행일</span><span class="value">Wed, 06 Aug 2025 04:07:54 -0400</span></div>
+          <div class="item"><span class="label">링크</span><span class="value"><a href="https://www.npr.org/2025/08/06/nx-s1-5493213/female-mountain-gorilla-friends-relationships" target="_blank" rel="noopener">원문 보기</a></span></div>
+          <div class="item"><span class="label">저자</span><span class="value">Nell Greenfieldboyce</span></div>
         </div>
-        
-        <div class="footer">
-            <p>🤖 AI 기반 자동 요약 시스템 | OpenAI GPT-4 활용</p>
+        <div class="keywords"><span class="kw">Female gorillas</span><span class="kw">Social group</span><span class="kw">Long-term ties</span></div>
+        <section class="images">
+          <div class="image-grid">
+            <figure class="image"><img src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" alt="NPR logo" onerror="this.closest('figure').style.display='none'"/><figcaption>NPR logo</figcaption></figure>
+          </div>
+        </section>
+        <section class="refs">
+          <div class="ref"><strong>Listen (3:26)</strong> — <a href="https://ondemand.npr.org/anon.npr-mp3/npr/me/2025/08/20250806_me_study_finds_female_mountain_gorillas_prefer_to_join_buddies.mp3" target="_blank" rel="noopener">오디오</a></div>
+          <div class="ref"><strong>Study</strong> — <a href="https://doi.org/10.1098/rspb.2025.0223" target="_blank" rel="noopener">Proc. R. Soc. B</a></div>
+        </section>
+        <section class="summary">
+          <span class="badge b-pos">Positive</span>
+          <p style="margin:10px 0 0">새 그룹으로 이동하는 암컷 고릴라는 과거 함께 지낸 암컷 '지인'이 있는 집단을 우선 선택하는 경향을 보였습니다. 이는 장기적 유대가 현재의 사회적 선택에 영향을 미친다는 점을 시사합니다.</p>
+        </section>
+      </div>
+    </article>
+
+    <!-- ARTICLE 3 -->
+    <article class="card" aria-labelledby="art-3-title" style="margin-top:18px;">
+      <div class="card-hd">
+        <h2 id="art-3-title" class="card-ttl">3) Johns Hopkins scientists grow a mini human brain that lights up and connects</h2>
+        <p class="card-sub">다중 영역 연결을 구현한 전뇌 오가노이드</p>
+      </div>
+      <div class="card-bd">
+        <div class="meta">
+          <div class="item"><span class="label">출처</span><span class="value">ScienceDaily — Mind & Brain</span></div>
+          <div class="item"><span class="label">발행일</span><span class="value">Mon, 04 Aug 2025 23:58:21 EDT</span></div>
+          <div class="item"><span class="label">링크</span><span class="value"><a href="https://www.sciencedaily.com/releases/2025/08/250803233113.htm" target="_blank" rel="noopener">원문 보기</a></span></div>
         </div>
-    </div>
+        <div class="keywords"><span class="kw">Organoid</span><span class="kw">Neural activity</span><span class="kw">Early brain dev.</span></div>
+        <section class="images">
+          <div class="image-grid">
+            <figure class="image"><img src="https://www.sciencedaily.com/images/1920/multi-region-brain-organoid.webp" alt="Lab-grown brain organoid" onerror="this.closest('figure').style.display='none'"/><figcaption>Lab-grown brain organoid</figcaption></figure>
+          </div>
+        </section>
+        <section class="refs">
+          <div class="ref"><strong>JHU News</strong> — <a href="https://hub.jhu.edu/2025/07/25/hopkins-researchers-develop-whole-brain-organoid/" target="_blank" rel="noopener">프로젝트 개요</a></div>
+          <div class="ref"><strong>DOI</strong> — <a href="http://dx.doi.org/10.1002/advs.202503768" target="_blank" rel="noopener">10.1002/advs.202503768</a></div>
+        </section>
+        <section class="summary">
+          <span class="badge b-pos">Positive</span>
+          <p style="margin:10px 0 0">Hopkins 팀은 기본 혈관 구조와 전기적 신호를 보이는 '멀티-리전' 전뇌 오가노이드를 제시했습니다. 동물 모델의 한계를 보완하며, 자폐·정신분열 스펙트럼 등 초기 발달 연구 및 신약 테스트의 새로운 플랫폼이 될 수 있습니다.</p>
+        </section>
+      </div>
+    </article>
+
+    <footer class="footer" role="contentinfo">
+      <p>🤖 AI 기반 자동 요약 • OpenAI 기반 파이프라인 • <span style="color:var(--muted)">© 2025</span></p>
+    </footer>
+  </div>
 </body>
 </html>
