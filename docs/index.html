@@ -459,7 +459,7 @@
     <div class="lsn-sub-card" role="document">
       <h3 id="lsn-sub-ttl">뉴스레터 구독</h3>
       <p>이메일을 남겨주시면 새 글이 발행될 때 받아보실 수 있어요.</p>
-      <form id="lsn-sub-form" method="POST" action="https://formspree.io/f/xjkojbjd">
+      <form id="lsn-sub-form">
         <input type="email" name="email" placeholder="you@example.com" required />
         <div class="lsn-sub-actions">
           <button type="submit">구독하기</button>
@@ -567,7 +567,7 @@
   (function(){
     const form = document.getElementById('lsn-sub-form');
     const submitBtn = form?.querySelector('button[type="submit"]');
-    const API = "https://lifespan-buttondown-proxy.yourname.workers.dev"; // ← 배포된 Worker 주소로 교체
+    const API = "https://lifespan-buttondown-proxy.snoh.workers.dev"; // ← 배포된 Worker 주소
 
     async function subscribe(email){
       const res = await fetch(API, {
