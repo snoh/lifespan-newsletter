@@ -498,7 +498,7 @@
 
   .lsn-sub-card{
     width:min(92vw, 420px); border-radius:16px; padding:22px;
-    background:var(--card,#0f1521); color:var(--text,#e6eaf2);
+    background:#0f1521; color:#e6eaf2;
     box-shadow:0 20px 60px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08);
     transform:translateY(6px); opacity:0; transition:opacity .15s ease, transform .15s ease;
   }
@@ -507,15 +507,38 @@
   .lsn-sub-card form{ display:grid; gap:10px; margin-top:10px; }
   .lsn-sub-card input{
     padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
-    background:#0c111b; color:inherit; width:100%;
+    background:#0c111b; color:#e6eaf2; width:100%; box-sizing:border-box;
+  }
+  .lsn-sub-card input::placeholder{
+    color:#9ca3af; opacity:0.8;
+  }
+  .lsn-sub-card input:focus{
+    outline:none; border-color:#7c89ff; box-shadow:0 0 0 2px rgba(124,137,255,0.2);
   }
   .lsn-sub-actions{ display:flex; gap:10px; }
   .lsn-sub-card button{
     padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
-    background:linear-gradient(135deg, var(--brand,#7c89ff), var(--brand-2,#b07cff)); color:#fff; cursor:pointer;
+    background:linear-gradient(135deg, #7c89ff, #b07cff); color:#fff; cursor:pointer;
+    font-weight:500; transition:all 0.2s ease;
   }
-  .lsn-sub-card button.lsn-ghost{ background:transparent; color:inherit; }
-  .lsn-sub-legal{ margin-top:8px; opacity:.7; font-size:12px; }
+  .lsn-sub-card button:hover{
+    transform:translateY(-1px); box-shadow:0 4px 12px rgba(124,137,255,0.3);
+  }
+  .lsn-sub-card button.lsn-ghost{ 
+    background:transparent; color:#e6eaf2; border-color:rgba(255,255,255,.3);
+  }
+  .lsn-sub-card button.lsn-ghost:hover{
+    background:rgba(255,255,255,0.1); transform:none; box-shadow:none;
+  }
+  .lsn-sub-card h3{
+    margin:0 0 8px 0; color:#e6eaf2; font-size:20px; font-weight:600;
+  }
+  .lsn-sub-card p{
+    margin:0 0 16px 0; color:#b8c2d6; line-height:1.5;
+  }
+  .lsn-sub-legal{ 
+    margin-top:8px; opacity:.7; font-size:12px; color:#9ca3af;
+  }
 
   /* 스크롤 잠금 (모달 열릴 때만) */
   .lsn-no-scroll, .lsn-no-scroll body{ overflow:hidden; }
