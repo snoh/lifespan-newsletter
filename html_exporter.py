@@ -76,6 +76,40 @@ class HTMLExporter:
         
         return filepath
     
+    def export_to_dist(
+        self,
+        summaries: List[Dict],
+        filename: str = "index.html",
+        template_name: str = "newsletter.html.j2",
+        theme: str = "default",
+        formspree_id: str = "",
+        **template_vars
+    ) -> str:
+        """dist 폴더에 직접 내보내기 (GitHub Actions/Pages용)"""
+        # dist 폴더 생성
+        dist_dir = "dist"
+        if not os.path.exists(dist_dir):
+            os.makedirs(dist_dir, exist_ok=True)
+            
+        filepath = os.path.join(dist_dir, filename)
+        
+        # 템플릿 데이터 준비
+        template_data = self._prepare_template_data(
+            summaries, 
+            theme, 
+            formspree_id=formspree_id,
+            **template_vars
+        )
+        
+        # 템플릿 렌더링
+        html_content = self._render_template(template_name, template_data)
+        
+        # 파일 저장
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        
+        return filepath
+    
     def _prepare_template_data(self, summaries: List[Dict], theme: str, **kwargs) -> Dict:
         """템플릿에 전달할 데이터 준비"""
         now = datetime.now()

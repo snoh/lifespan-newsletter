@@ -4,21 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🧠 심리학 뉴스레터 — Default 테마</title>
-  <meta name="description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
+  <meta name="description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약" />
   
   <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="article" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="🧠 심리학 뉴스레터 요약" />
+  <meta property="og:description" content="매일 아침 자동 업데이트되는 프리미엄 심리학 뉴스 요약" />
+  <meta property="og:image" content="assets/og-default.png" />
   <meta property="og:url" content="" />
-  <meta property="og:title" content="🧠 심리학 뉴스레터 — Default 테마" />
-  <meta property="og:description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
-  <meta property="og:image" content="" />
 
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="" />
-  <meta property="twitter:title" content="🧠 심리학 뉴스레터 — Default 테마" />
-  <meta property="twitter:description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
-  <meta property="twitter:image" content="" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="🧠 심리학 뉴스레터 요약" />
+  <meta name="twitter:description" content="매일 아침 자동 업데이트되는 프리미엄 심리학 뉴스 요약" />
+  <meta name="twitter:image" content="assets/og-default.png" />
   
   <style>
     /* =========================
@@ -212,7 +211,7 @@
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7 3v3M17 3v3M4 11h16M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          생성일: <strong>2025년 08월 09일 11:43</strong>
+          생성일: <strong>2025년 08월 09일 11:55</strong>
         </span>
         <span class="chip" title="버전" aria-label="템플릿 버전">v1.0 • Premium</span>
         
@@ -429,5 +428,24 @@
       <p>🤖 AI 기반 자동 요약 • OpenAI 기반 파이프라인 • <span style="color:var(--muted)">© 2025</span></p>
     </footer>
   </div>
+
+  
+
+  <!-- 이미지 최적화 스크립트 -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('img').forEach(img => {
+      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+      img.style.aspectRatio = img.style.aspectRatio || '16/9';
+      img.style.objectFit = img.style.objectFit || 'cover';
+      if (!img.getAttribute('onerror')) {
+        img.setAttribute('onerror', "this.closest('figure')?.remove()");
+      }
+    });
+  });
+
+  
+  </script>
 </body>
 </html>

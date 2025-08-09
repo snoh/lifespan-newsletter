@@ -4,21 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ title|default('🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿') }}</title>
-  <meta name="description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿') }}" />
+  <meta name="description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약" />
   
   <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="article" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="🧠 심리학 뉴스레터 요약" />
+  <meta property="og:description" content="매일 아침 자동 업데이트되는 프리미엄 심리학 뉴스 요약" />
+  <meta property="og:image" content="assets/og-default.png" />
   <meta property="og:url" content="{{ url|default('') }}" />
-  <meta property="og:title" content="{{ title|default('🧠 심리학 뉴스레터 요약') }}" />
-  <meta property="og:description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약') }}" />
-  <meta property="og:image" content="{{ og_image|default('') }}" />
 
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="{{ url|default('') }}" />
-  <meta property="twitter:title" content="{{ title|default('🧠 심리학 뉴스레터 요약') }}" />
-  <meta property="twitter:description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약') }}" />
-  <meta property="twitter:image" content="{{ twitter_image|default('') }}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="🧠 심리학 뉴스레터 요약" />
+  <meta name="twitter:description" content="매일 아침 자동 업데이트되는 프리미엄 심리학 뉴스 요약" />
+  <meta name="twitter:image" content="assets/og-default.png" />
   
   <style>
     /* =========================
@@ -352,5 +351,86 @@
       <p>🤖 AI 기반 자동 요약 • OpenAI 기반 파이프라인 • <span style="color:var(--muted)">© {{ current_year|default('2025') }}</span></p>
     </footer>
   </div>
+
+  {% if formspree_id %}
+  <!-- 구독 FAB 버튼 -->
+  <button class="subscribe-fab" aria-haspopup="dialog" aria-controls="subscribe-modal" onclick="openSubModal()" aria-label="구독 신청">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/>
+    </svg>
+  </button>
+
+  <!-- 구독 모달 -->
+  <div id="subscribe-modal" class="sub-modal" role="dialog" aria-modal="true" aria-labelledby="sub-ttl" hidden>
+    <div class="sub-card">
+      <h3 id="sub-ttl">뉴스레터 구독</h3>
+      <p>이메일을 남겨주시면 새 글이 발행될 때 받아보실 수 있어요.</p>
+      <form id="sub-form" method="POST" action="https://formspree.io/f/{{ formspree_id }}">
+        <input type="email" name="email" placeholder="you@example.com" required />
+        <div class="sub-actions">
+          <button type="submit">구독하기</button>
+          <button type="button" class="ghost" onclick="closeSubModal()">닫기</button>
+        </div>
+      </form>
+      <p class="sub-legal">제출 시 개인정보 처리방침에 동의합니다.</p>
+    </div>
+  </div>
+
+  <style>
+  .subscribe-fab{
+    position:fixed; right:20px; bottom:22px; width:56px; height:56px;
+    display:grid; place-items:center; border-radius:50%;
+    color:#fff; background:linear-gradient(135deg, var(--brand), var(--brand-2));
+    box-shadow:0 10px 24px rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.1);
+    text-decoration:none; z-index:1000; transition:transform .15s, box-shadow .2s;
+  }
+  .subscribe-fab:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.35); }
+
+  .sub-modal{position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.45); z-index:1001;}
+  .sub-card{width:min(92vw,420px); border-radius:16px; padding:22px; background:var(--card); box-shadow:var(--shadow-2); border:1px solid rgba(255,255,255,.08);}
+  .sub-card h3{margin:0 0 6px;}
+  .sub-card p{margin:6px 0 0;}
+  .sub-card form{display:grid; gap:10px; margin-top:10px;}
+  .sub-card input{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#0c111b; color:var(--text);}
+  .sub-actions{display:flex; gap:10px;}
+  .sub-card button{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#fff; cursor:pointer;}
+  .sub-card button.ghost{background:transparent; color:var(--text);}
+  .sub-legal{margin-top:8px; color:var(--muted); font-size:12px;}
+  </style>
+  {% endif %}
+
+  <!-- 이미지 최적화 스크립트 -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('img').forEach(img => {
+      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+      img.style.aspectRatio = img.style.aspectRatio || '16/9';
+      img.style.objectFit = img.style.objectFit || 'cover';
+      if (!img.getAttribute('onerror')) {
+        img.setAttribute('onerror', "this.closest('figure')?.remove()");
+      }
+    });
+  });
+
+  {% if formspree_id %}
+  function openSubModal(){ document.getElementById('subscribe-modal').hidden=false; }
+  function closeSubModal(){ document.getElementById('subscribe-modal').hidden=true; }
+  
+  // 모달 외부 클릭 시 닫기
+  document.getElementById('subscribe-modal')?.addEventListener('click', (e) => {
+    if (e.target.classList.contains('sub-modal')) {
+      closeSubModal();
+    }
+  });
+  
+  // ESC 키로 모달 닫기
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !document.getElementById('subscribe-modal').hidden) {
+      closeSubModal();
+    }
+  });
+  {% endif %}
+  </script>
 </body>
 </html>

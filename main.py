@@ -3,6 +3,9 @@
 """
 
 import sys
+import os
+import shutil
+from pathlib import Path
 from typing import List, Dict
 from dotenv import load_dotenv
 
@@ -120,31 +123,7 @@ class NewsletterSummarySystem:
             
             # HTML 파일로 내보내기
             if summaries:
-                try:
-                    # output 폴더에 내보내기
-                    html_filepath = self.html_exporter.export_summaries_to_html(
-                        summaries, 
-                        theme="default"
-                    )
-                    logger.info("HTML 파일 생성 완료", 
-                              filepath=html_filepath,
-                              **log_processing_step("export_html"))
-                    print(f"\n🌐 HTML 파일이 생성되었습니다: {html_filepath}")
-                    
-                    # docs 폴더에도 내보내기 (GitHub Pages용)
-                    docs_filepath = self.html_exporter.export_to_docs(
-                        summaries,
-                        theme="default"
-                    )
-                    logger.info("GitHub Pages 파일 업데이트 완료", 
-                              filepath=docs_filepath,
-                              **log_processing_step("export_docs"))
-                    print(f"📄 GitHub Pages 파일 업데이트: {docs_filepath}")
-                    print("   브라우저에서 열어서 이미지와 함께 확인하세요!")
-                except Exception as e:
-                    logger.error("HTML 파일 생성 실패", 
-                               error=str(e),
-                               **log_processing_step("export_html", status="failed"))
+                self.build_newsletter(summaries)
             
             return summaries
             
@@ -152,6 +131,52 @@ class NewsletterSummarySystem:
             logger.error("시스템 실행 실패", 
                         error=str(e),
                         **log_processing_step("system_run", status="failed"))
+            raise
+    
+    def build_newsletter(self, summaries: List[Dict]) -> None:
+        """뉴스레터를 dist/ 폴더에 빌드"""
+        try:
+            # dist 폴더 초기화
+            dist = Path("dist")
+            if dist.exists():
+                shutil.rmtree(dist)
+            (dist / "assets").mkdir(parents=True, exist_ok=True)
+            
+            # Formspree ID 환경변수에서 읽기
+            formspree_id = os.getenv("FORMSPREE_ID", "")
+            
+            logger.info("뉴스레터 빌드 시작", 
+                       output_dir=str(dist),
+                       formspree_enabled=bool(formspree_id),
+                       **log_processing_step("build_start"))
+            
+            # HTML 생성
+            html_filepath = self.html_exporter.export_to_dist(
+                summaries,
+                theme="default",
+                formspree_id=formspree_id
+            )
+            
+            # 기본 OG 이미지 복사 (있으면)
+            src_default_og = Path("assets/og-default.png")
+            if src_default_og.exists():
+                shutil.copy(src_default_og, dist / "assets/og-default.png")
+                logger.info("OG 이미지 복사 완료", src=str(src_default_og))
+            
+            logger.info("뉴스레터 빌드 완료", 
+                       filepath=html_filepath,
+                       **log_processing_step("build_complete"))
+            
+            print(f"\n🏗️  뉴스레터 빌드 완료: {html_filepath}")
+            print(f"📁 정적 파일: {dist / 'assets'}")
+            if formspree_id:
+                print(f"📧 구독 기능 활성화 (Formspree ID: {formspree_id[:8]}...)")
+            print("   브라우저에서 열어서 확인하세요!")
+            
+        except Exception as e:
+            logger.error("뉴스레터 빌드 실패", 
+                        error=str(e),
+                        **log_processing_step("build", status="failed"))
             raise
     
     def _print_summary(self, idx: int, summary: Dict):
