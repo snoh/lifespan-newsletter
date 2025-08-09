@@ -448,8 +448,8 @@
   
   </script>
 
-  <!-- === Subscribe FAB + Modal (lifespan-newsletter) === -->
-  <button class="lsn-subscribe-fab" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
+  <!-- === LSN Subscribe: FAB + Modal (fixed) === -->
+  <button class="lsn-subscribe-fab" type="button" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/>
     </svg>
@@ -459,7 +459,7 @@
     <div class="lsn-sub-card" role="document">
       <h3 id="lsn-sub-ttl">뉴스레터 구독</h3>
       <p>이메일을 남겨주시면 새 글이 발행될 때 받아보실 수 있어요.</p>
-      <form id="lsn-sub-form">
+      <form id="lsn-sub-form" method="POST" action="https://formspree.io/f/xjkojbjd">
         <input type="email" name="email" placeholder="you@example.com" required />
         <div class="lsn-sub-actions">
           <button type="submit">구독하기</button>
@@ -471,7 +471,7 @@
   </div>
 
   <style>
-  /* ===== Subscribe FAB ===== */
+  /* FAB (항상 보이도록 높은 z-index) */
   .lsn-subscribe-fab{
     position:fixed; right:20px; bottom:22px; width:56px; height:56px;
     display:grid; place-items:center; border-radius:50%;
@@ -482,191 +482,99 @@
   }
   .lsn-subscribe-fab:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.35); }
 
-  /* ===== Modal Overlay ===== */
-  .lsn-sub-modal{ 
-    display:none;               /* 기본: 보이지 않음 */
-    position:fixed; inset:0; 
-    place-items:center; 
-    background:rgba(0,0,0,.45); 
-    z-index:10001;
-    pointer-events:none;        /* 기본: 클릭 막지 않음 */
+  /* MODAL 기본은 비가시; [open]일 때만 표시 */
+  .lsn-sub-modal{
+    display:none; position:fixed; inset:0; place-items:center;
+    background:rgba(0,0,0,.45); z-index:10001;
+    pointer-events:none; /* 닫혔을 땐 클릭 방지 안 걸리게 */
   }
-  .lsn-sub-modal[open]{ 
-    display:grid;               /* open 속성일 때만 표시 */
-    pointer-events:auto; 
-  }
+  .lsn-sub-modal[open]{ display:grid; pointer-events:auto; }
 
   .lsn-sub-card{
     width:min(92vw, 420px); border-radius:16px; padding:22px;
-    background:#0f1521; color:#e6eaf2;
+    background:var(--card,#0f1521); color:var(--text,#e6eaf2);
     box-shadow:0 20px 60px rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.08);
-    transform:translateY(6px); opacity:0; transition:opacity .15s ease, transform .15s ease;
+    transform:translateY(6px); opacity:0; transition:opacity .15s, transform .15s;
+    position:relative; z-index:10002; pointer-events:auto; /* 카드 위 클릭 허용 */
   }
   .lsn-sub-modal[open] .lsn-sub-card{ opacity:1; transform:translateY(0); }
 
   .lsn-sub-card form{ display:grid; gap:10px; margin-top:10px; }
   .lsn-sub-card input{
-    padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
-    background:#0c111b; color:#e6eaf2; width:100%; box-sizing:border-box;
-  }
-  .lsn-sub-card input::placeholder{
-    color:#9ca3af; opacity:0.8;
-  }
-  .lsn-sub-card input:focus{
-    outline:none; border-color:#7c89ff; box-shadow:0 0 0 2px rgba(124,137,255,0.2);
+    width:100%; padding:10px 12px; border-radius:10px;
+    border:1px solid rgba(255,255,255,.15); background:#0c111b; color:inherit;
   }
   .lsn-sub-actions{ display:flex; gap:10px; }
   .lsn-sub-card button{
     padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
-    background:linear-gradient(135deg, #7c89ff, #b07cff); color:#fff; cursor:pointer;
-    font-weight:500; transition:all 0.2s ease;
+    background:linear-gradient(135deg, var(--brand,#7c89ff), var(--brand-2,#b07cff)); color:#fff; cursor:pointer;
   }
-  .lsn-sub-card button:hover{
-    transform:translateY(-1px); box-shadow:0 4px 12px rgba(124,137,255,0.3);
-  }
-  .lsn-sub-card button.lsn-ghost{ 
-    background:transparent; color:#e6eaf2; border-color:rgba(255,255,255,.3);
-  }
-  .lsn-sub-card button.lsn-ghost:hover{
-    background:rgba(255,255,255,0.1); transform:none; box-shadow:none;
-  }
-  .lsn-sub-card h3{
-    margin:0 0 8px 0; color:#e6eaf2; font-size:20px; font-weight:600;
-  }
-  .lsn-sub-card p{
-    margin:0 0 16px 0; color:#b8c2d6; line-height:1.5;
-  }
-  .lsn-sub-legal{ 
-    margin-top:8px; opacity:.7; font-size:12px; color:#9ca3af;
-  }
+  .lsn-sub-card button.lsn-ghost{ background:transparent; color:inherit; }
+  .lsn-sub-legal{ margin-top:8px; opacity:.7; font-size:12px; }
 
-  /* 스크롤 잠금 (모달 열릴 때만) */
+  /* 모달 열릴 때 스크롤 잠금 */
   .lsn-no-scroll, .lsn-no-scroll body{ overflow:hidden; }
   </style>
 
   <script>
-  (function(){
-    const fab = document.querySelector('.lsn-subscribe-fab');
-    const modal = document.getElementById('lsn-subscribe-modal');
-    const closeBtn = document.getElementById('lsn-close-btn');
+  (()=> {
+    // 혹시 중복 모달이 있다면 첫 번째만 남기고 제거 (중복 ID 방어)
+    const modals = document.querySelectorAll('#lsn-subscribe-modal');
+    modals.forEach((m, i) => { if (i > 0) m.remove(); });
+
+    const modal   = document.getElementById('lsn-subscribe-modal');
+    const fab     = document.querySelector('.lsn-subscribe-fab');
+    const closeBtn= document.getElementById('lsn-close-btn');
+
+    // 강제 초기화: 자동 오픈 방지
+    if (modal) { modal.hidden = true; modal.removeAttribute('open'); }
 
     function openSubModal(){
       if (!modal) return;
-      modal.hidden = false;          // 1) hidden 제거
-      requestAnimationFrame(()=>{    // 2) 다음 프레임에 open 추가 (트랜지션 안정화)
+      modal.hidden = false;
+      // 다음 프레임에 open 추가 (트랜지션 안정화)
+      requestAnimationFrame(() => {
         modal.setAttribute('open','');
         document.documentElement.classList.add('lsn-no-scroll');
       });
     }
     function closeSubModal(){
-      console.log('closeSubModal called');
-      if (!modal) {
-        console.log('Modal not found');
-        return;
-      }
-      console.log('Closing modal...');
-      modal.removeAttribute('open'); // 1) open 제거
-      setTimeout(()=>{               // 2) 애니메이션 끝나면 hidden 적용
+      if (!modal) return;
+      modal.removeAttribute('open');
+      setTimeout(() => {
         modal.hidden = true;
         document.documentElement.classList.remove('lsn-no-scroll');
-        console.log('Modal closed and hidden');
       }, 150);
     }
 
-    // 전역 노출(기존 코드 호환)
+    // 전역 노출(혹시 외부 스크립트에서 호출할 수 있게)
     window.openSubModal = openSubModal;
     window.closeSubModal = closeSubModal;
 
-    // 초기 상태 강제: 혹시 build/캐시 꼬여 open이 박혀 있으면 끈다
-    if (modal){
-      modal.hidden = true;
-      modal.removeAttribute('open');
-    }
+    // 안전한 이벤트 바인딩 (중복 방지 위해 먼저 제거 시도)
+    document.addEventListener('DOMContentLoaded', () => {
+      fab?.addEventListener('click', (e) => { e.preventDefault(); openSubModal(); }, { passive:true });
+      closeBtn?.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeSubModal(); }, { passive:true });
 
-    // DOM이 준비되면 이벤트 바인딩 (즉시 실행 또는 DOMContentLoaded)
-    function bindEvents(){
-      console.log('Binding events...', {fab, modal, closeBtn});
-      
-      if (fab) {
-        fab.addEventListener('click', openSubModal, {passive:true});
-        console.log('FAB click listener added');
-      }
-      
-      if (closeBtn) {
-        closeBtn.addEventListener('click', closeSubModal, {passive:true});
-        console.log('Close button click listener added');
-      }
-      
-      if (modal) {
-        modal.addEventListener('click', (e)=>{ 
-          if (e.target === modal) {
-            console.log('Modal overlay clicked');
-            closeSubModal();
-          }
-        });
-      }
-      
-      document.addEventListener('keydown', (e)=>{ 
+      // 오버레이(바깥) 클릭으로 닫기
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) { e.preventDefault(); closeSubModal(); }
+      });
+
+      // ESC로 닫기
+      document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal && !modal.hidden) {
-          console.log('Escape key pressed');
-          closeSubModal();
+          e.preventDefault(); closeSubModal();
         }
       });
-    }
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bindEvents);
-    } else {
-      bindEvents(); // DOM이 이미 준비됨
-    }
-  })();
-  </script>
 
-  <script>
-  (function(){
-    const form = document.getElementById('lsn-sub-form');
-    const submitBtn = form?.querySelector('button[type="submit"]');
-    const API = "https://lifespan-buttondown-proxy.snoh.workers.dev"; // ← 배포된 Worker 주소
-
-    async function subscribe(email){
-      const res = await fetch(API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-      return res.json();
-    }
-
-    form?.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const email = e.target.email.value.trim();
-      if (!email) return;
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = "처리 중...";
-
-      try {
-        const data = await subscribe(email);
-        if (data?.ok) {
-          // 성공: 감사 메시지 표시 or 리다이렉트
-          alert("구독이 완료되었습니다! 메일함을 확인해 주세요.");
-          e.target.reset();
-          window.closeSubModal?.();
-        } else {
-          alert("구독 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.");
-          console.error(data);
-        }
-      } catch (err) {
-        alert("네트워크 오류가 발생했습니다.");
-        console.error(err);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "구독하기";
-      }
+      // (선택) URL 트리거: ?subscribe=1 일 때만 자동 오픈
+      const q = new URLSearchParams(location.search);
+      if (q.get('subscribe') === '1') openSubModal();
     });
   })();
   </script>
-  <!-- === /Subscribe FAB + Modal === -->
+  <!-- === /LSN Subscribe === -->
 
 </body>
 </html>
