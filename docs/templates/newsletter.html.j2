@@ -352,52 +352,41 @@
     </footer>
   </div>
 
-  {% if formspree_id %}
-  <!-- 구독 FAB 버튼 -->
-  <button class="subscribe-fab" aria-haspopup="dialog" aria-controls="subscribe-modal" onclick="openSubModal()" aria-label="구독 신청">
-    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-      <path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/>
-    </svg>
+  <!-- === LSN Subscribe (template canonical) === -->
+  <button class="lsn-subscribe-fab" type="button" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/></svg>
   </button>
 
-  <!-- 구독 모달 -->
-  <div id="subscribe-modal" class="sub-modal" role="dialog" aria-modal="true" aria-labelledby="sub-ttl" hidden>
-    <div class="sub-card">
-      <h3 id="sub-ttl">뉴스레터 구독</h3>
+  <div id="lsn-subscribe-modal" class="lsn-sub-modal" role="dialog" aria-modal="true" aria-labelledby="lsn-sub-ttl" hidden>
+    <div class="lsn-sub-card" role="document">
+      <h3 id="lsn-sub-ttl">뉴스레터 구독</h3>
       <p>이메일을 남겨주시면 새 글이 발행될 때 받아보실 수 있어요.</p>
-      <form id="sub-form" method="POST" action="https://formspree.io/f/{{ formspree_id }}">
+      <form id="lsn-sub-form" method="POST" action="https://formspree.io/f/xjkojbjd">
         <input type="email" name="email" placeholder="you@example.com" required />
-        <div class="sub-actions">
+        <div class="lsn-sub-actions">
           <button type="submit">구독하기</button>
-          <button type="button" class="ghost" onclick="closeSubModal()">닫기</button>
+          <button type="button" class="lsn-ghost" id="lsn-close-btn">닫기</button>
         </div>
       </form>
-      <p class="sub-legal">제출 시 개인정보 처리방침에 동의합니다.</p>
+      <p class="lsn-sub-legal">제출 시 개인정보 처리방침에 동의합니다.</p>
     </div>
   </div>
 
   <style>
-  .subscribe-fab{
-    position:fixed; right:20px; bottom:22px; width:56px; height:56px;
-    display:grid; place-items:center; border-radius:50%;
-    color:#fff; background:linear-gradient(135deg, var(--brand), var(--brand-2));
-    box-shadow:0 10px 24px rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.1);
-    text-decoration:none; z-index:1000; transition:transform .15s, box-shadow .2s;
-  }
-  .subscribe-fab:hover{ transform:translateY(-2px); box-shadow:0 16px 36px rgba(0,0,0,.35); }
-
-  .sub-modal{position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.45); z-index:1001;}
-  .sub-card{width:min(92vw,420px); border-radius:16px; padding:22px; background:var(--card); box-shadow:var(--shadow-2); border:1px solid rgba(255,255,255,.08);}
-  .sub-card h3{margin:0 0 6px;}
-  .sub-card p{margin:6px 0 0;}
-  .sub-card form{display:grid; gap:10px; margin-top:10px;}
-  .sub-card input{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#0c111b; color:var(--text);}
-  .sub-actions{display:flex; gap:10px;}
-  .sub-card button{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#fff; cursor:pointer;}
-  .sub-card button.ghost{background:transparent; color:var(--text);}
-  .sub-legal{margin-top:8px; color:var(--muted); font-size:12px;}
+  .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:transform .15s,box-shadow .2s}
+  .lsn-subscribe-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
+  .lsn-sub-modal{display:none;position:fixed;inset:0;place-items:center;background:rgba(0,0,0,.45);z-index:10001;pointer-events:none}
+  .lsn-sub-modal[open]{display:grid;pointer-events:auto}
+  .lsn-sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:var(--card,#0f1521);color:var(--text,#e6eaf2);box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transform:translateY(6px);opacity:0;transition:opacity .15s,transform .15s;position:relative;z-index:10002;pointer-events:auto}
+  .lsn-sub-modal[open] .lsn-sub-card{opacity:1;transform:translateY(0)}
+  .lsn-sub-card form{display:grid;gap:10px;margin-top:10px}
+  .lsn-sub-card input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c111b;color:inherit}
+  .lsn-sub-actions{display:flex;gap:10px}
+  .lsn-sub-card button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));color:#fff;cursor:pointer}
+  .lsn-sub-card button.lsn-ghost{background:transparent;color:inherit}
+  .lsn-sub-legal{margin-top:8px;opacity:.7;font-size:12px}
+  .lsn-no-scroll, .lsn-no-scroll body{overflow:hidden}
   </style>
-  {% endif %}
 
   <!-- 이미지 최적화 스크립트 -->
   <script>
@@ -413,24 +402,35 @@
     });
   });
 
-  {% if formspree_id %}
-  function openSubModal(){ document.getElementById('subscribe-modal').hidden=false; }
-  function closeSubModal(){ document.getElementById('subscribe-modal').hidden=true; }
-  
-  // 모달 외부 클릭 시 닫기
-  document.getElementById('subscribe-modal')?.addEventListener('click', (e) => {
-    if (e.target.classList.contains('sub-modal')) {
-      closeSubModal();
+  // LSN Subscribe modal script
+  (()=> {
+    const modal = document.getElementById('lsn-subscribe-modal');
+    const fab   = document.querySelector('.lsn-subscribe-fab');
+    const closeBtn = document.getElementById('lsn-close-btn');
+
+    if (modal){ modal.hidden = true; modal.removeAttribute('open'); }
+
+    function openSubModal(){
+      modal.hidden = false;
+      requestAnimationFrame(()=>{ modal.setAttribute('open',''); document.documentElement.classList.add('lsn-no-scroll'); });
     }
-  });
-  
-  // ESC 키로 모달 닫기
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !document.getElementById('subscribe-modal').hidden) {
-      closeSubModal();
+    function closeSubModal(){
+      modal.removeAttribute('open');
+      setTimeout(()=>{ modal.hidden = true; document.documentElement.classList.remove('lsn-no-scroll'); }, 150);
     }
-  });
-  {% endif %}
+    window.openSubModal = openSubModal; window.closeSubModal = closeSubModal;
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      fab?.addEventListener('click', (e)=>{ e.preventDefault(); openSubModal(); }, {passive:true});
+      closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); closeSubModal(); }, {passive:true});
+      modal?.addEventListener('click', (e)=>{ if (e.target === modal) closeSubModal(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) closeSubModal(); });
+
+      // 자동 오픈 금지(필요시 ?subscribe=1 에서만)
+      const q = new URLSearchParams(location.search);
+      if (q.get('subscribe') === '1') openSubModal();
+    });
+  })();
   </script>
 </body>
 </html>
