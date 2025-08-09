@@ -448,7 +448,7 @@
   
   </script>
 
-  <!-- LSN Subscribe: FAB + Modal (close fix) -->
+  <!-- === LSN Subscribe (canonical) === -->
   <button class="lsn-subscribe-fab" type="button" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M4 5h16a2 2 0 0 1 2 2v.4l-10 5.6L2 7.4V7a2 2 0 0 1 2-2Zm18 5.2V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6.8l10 5.6 10-5.6Z"/></svg>
   </button>
@@ -469,11 +469,9 @@
   </div>
 
   <style>
-  /* FAB */
   .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:transform .15s,box-shadow .2s}
   .lsn-subscribe-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
 
-  /* Modal: 기본 비가시, [open]일 때만 표시 */
   .lsn-sub-modal{display:none;position:fixed;inset:0;place-items:center;background:rgba(0,0,0,.45);z-index:10001;pointer-events:none}
   .lsn-sub-modal[open]{display:grid;pointer-events:auto}
   .lsn-sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:var(--card,#0f1521);color:var(--text,#e6eaf2);box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transform:translateY(6px);opacity:0;transition:opacity .15s,transform .15s;position:relative;z-index:10002;pointer-events:auto}
@@ -484,18 +482,16 @@
   .lsn-sub-card button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));color:#fff;cursor:pointer}
   .lsn-sub-card button.lsn-ghost{background:transparent;color:inherit}
   .lsn-sub-legal{margin-top:8px;opacity:.7;font-size:12px}
-
-  /* 모달 열릴 때 스크롤 잠금 */
   .lsn-no-scroll, .lsn-no-scroll body{overflow:hidden}
   </style>
 
   <script>
   (()=> {
-    const modal   = document.getElementById('lsn-subscribe-modal');
-    const fab     = document.querySelector('.lsn-subscribe-fab');
-    const closeBtn= document.getElementById('lsn-close-btn');
+    const modal = document.getElementById('lsn-subscribe-modal');
+    const fab   = document.querySelector('.lsn-subscribe-fab');
+    const closeBtn = document.getElementById('lsn-close-btn');
 
-    // 초기 강제 리셋 (open 남아있어도 끄기)
+    // 초기화: 자동 오픈 방지
     if (modal){ modal.hidden = true; modal.removeAttribute('open'); }
 
     function openSubModal(){
@@ -508,21 +504,22 @@
       modal.removeAttribute('open');
       setTimeout(()=>{ modal.hidden = true; document.documentElement.classList.remove('lsn-no-scroll'); }, 150);
     }
+    window.openSubModal = openSubModal; window.closeSubModal = closeSubModal;
 
-    // 전역(디버그용)
-    window.openSubModal = openSubModal;
-    window.closeSubModal = closeSubModal;
-
-    // 안전한 바인딩 (중복 방지)
     document.addEventListener('DOMContentLoaded', ()=>{
-      fab?.addEventListener('click', (e)=>{ e.preventDefault(); openSubModal(); }, { passive:true });
-      closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); closeSubModal(); }, { passive:true });
-      modal?.addEventListener('click', (e)=>{ if (e.target === modal) { e.preventDefault(); closeSubModal(); }});
-      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && modal && !modal.hidden){ e.preventDefault(); closeSubModal(); }});
+      fab?.addEventListener('click', (e)=>{ e.preventDefault(); openSubModal(); }, {passive:true});
+      closeBtn?.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); closeSubModal(); }, {passive:true});
+      modal?.addEventListener('click', (e)=>{ if (e.target === modal) closeSubModal(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) closeSubModal(); });
+
+      // URL 트리거 (원하면만): ?subscribe=1 일 때만 자동 오픈
+      const q = new URLSearchParams(location.search);
+      if (q.get('subscribe') === '1') openSubModal();
     });
   })();
   </script>
-  <!-- /LSN Subscribe -->
+  <!-- === /LSN Subscribe === -->
 
 </body>
 </html>
+<!-- Cache bust: 2025-08-09 14:15 -->
