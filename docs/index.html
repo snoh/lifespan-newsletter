@@ -562,6 +562,51 @@
     });
   })();
   </script>
+
+  <script>
+  (function(){
+    const form = document.getElementById('lsn-sub-form');
+    const submitBtn = form?.querySelector('button[type="submit"]');
+    const API = "https://lifespan-buttondown-proxy.yourname.workers.dev"; // ← 배포된 Worker 주소로 교체
+
+    async function subscribe(email){
+      const res = await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      return res.json();
+    }
+
+    form?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = e.target.email.value.trim();
+      if (!email) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "처리 중...";
+
+      try {
+        const data = await subscribe(email);
+        if (data?.ok) {
+          // 성공: 감사 메시지 표시 or 리다이렉트
+          alert("구독이 완료되었습니다! 메일함을 확인해 주세요.");
+          e.target.reset();
+          window.closeSubModal?.();
+        } else {
+          alert("구독 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.");
+          console.error(data);
+        }
+      } catch (err) {
+        alert("네트워크 오류가 발생했습니다.");
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "구독하기";
+      }
+    });
+  })();
+  </script>
   <!-- === /Subscribe FAB + Modal === -->
 
 </body>
