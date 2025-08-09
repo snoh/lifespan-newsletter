@@ -6,6 +6,10 @@ dist/ 빌드 시스템 테스트
 from html_exporter import HTMLExporter
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+# 환경변수 로드
+load_dotenv()
 
 def test_dist_build():
     """dist 폴더 빌드 테스트"""
