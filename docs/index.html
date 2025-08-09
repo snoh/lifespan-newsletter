@@ -469,17 +469,17 @@
   </div>
 
   <style>
-  .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:transform .15s,box-shadow .2s}
+  .lsn-subscribe-fab{position:fixed;right:20px;bottom:22px;width:56px;height:56px;display:grid;place-items:center;border-radius:50%;color:#fff;background:linear-gradient(135deg,#7c89ff,#b07cff);box-shadow:0 10px 24px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);text-decoration:none;z-index:10000;cursor:pointer;transition:transform .15s,box-shadow .2s}
   .lsn-subscribe-fab:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
 
-  .lsn-sub-modal{display:none;position:fixed;inset:0;place-items:center;background:rgba(0,0,0,.45);z-index:10001;pointer-events:none}
-  .lsn-sub-modal[open]{display:grid;pointer-events:auto}
-  .lsn-sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:var(--card,#0f1521);color:var(--text,#e6eaf2);box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transform:translateY(6px);opacity:0;transition:opacity .15s,transform .15s;position:relative;z-index:10002;pointer-events:auto}
+  .lsn-sub-modal{display:none !important;position:fixed;inset:0;place-items:center;background:rgba(0,0,0,.45);z-index:10001;pointer-events:none}
+  .lsn-sub-modal[open]{display:grid !important;pointer-events:auto}
+  .lsn-sub-card{width:min(92vw,420px);border-radius:16px;padding:22px;background:#0f1521;color:#e6eaf2;box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);transform:translateY(6px);opacity:0;transition:opacity .15s,transform .15s;position:relative;z-index:10002;pointer-events:auto}
   .lsn-sub-modal[open] .lsn-sub-card{opacity:1;transform:translateY(0)}
   .lsn-sub-card form{display:grid;gap:10px;margin-top:10px}
   .lsn-sub-card input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c111b;color:inherit}
   .lsn-sub-actions{display:flex;gap:10px}
-  .lsn-sub-card button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,var(--brand,#7c89ff),var(--brand-2,#b07cff));color:#fff;cursor:pointer}
+  .lsn-sub-card button{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,#7c89ff,#b07cff);color:#fff;cursor:pointer}
   .lsn-sub-card button.lsn-ghost{background:transparent;color:inherit}
   .lsn-sub-legal{margin-top:8px;opacity:.7;font-size:12px}
   .lsn-no-scroll, .lsn-no-scroll body{overflow:hidden}
