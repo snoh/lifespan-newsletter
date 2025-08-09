@@ -3,25 +3,22 @@
 """
 
 import sys
-import logging
 from typing import List, Dict
 from dotenv import load_dotenv
 
-from config import OPENAI_API_KEY, DEFAULT_ARTICLE_LIMIT
+from config import OPENAI_API_KEY, DEFAULT_ARTICLE_LIMIT, LOG_FILE
 from rss_reader import RSSReader
 from summarizer import ArticleSummarizer
 from content_extractor import ContentExtractor
 from html_exporter import HTMLExporter
+from logger_config import configure_logging, get_logger, log_article_context, log_processing_step
 
 # 환경 변수 로드
 load_dotenv()
 
 # 로깅 설정
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+configure_logging(log_file=LOG_FILE, log_level="INFO")
+logger = get_logger(__name__)
 
 class NewsletterSummarySystem:
     """뉴스레터 요약 시스템 메인 클래스"""
@@ -40,25 +37,32 @@ class NewsletterSummarySystem:
         self.content_extractor = ContentExtractor()
         self.html_exporter = HTMLExporter()
         
-        logger.info("뉴스레터 요약 시스템 초기화 완료")
+        logger.info("뉴스레터 요약 시스템 초기화 완료", system="newsletter_summary")
     
     def run(self, limit: int = DEFAULT_ARTICLE_LIMIT) -> List[Dict]:
         """메인 실행 함수"""
         try:
-            logger.info(f"뉴스레터 요약 시작 (기사 수: {limit})")
+            logger.info("뉴스레터 요약 시작", **log_processing_step("start", limit=limit))
             
             # 1단계: RSS 피드에서 기사 수집
             articles = self.rss_reader.fetch_all_feeds(limit)
             
             if not articles:
-                logger.warning("수집된 기사가 없습니다")
+                logger.warning("수집된 기사가 없습니다", **log_processing_step("rss_fetch", result="no_articles"))
                 return []
             
             # 2단계: 각 기사 요약
             summaries = []
             for idx, article in enumerate(articles, 1):
                 try:
-                    logger.info(f"\n[{idx}/{len(articles)}] 기사 처리: {article['title'][:50]}...")
+                    article_context = log_article_context(
+                        article_id=str(idx),
+                        title=article['title'],
+                        source=article.get('source', '')
+                    )
+                    logger.info("기사 처리 시작", 
+                              progress=f"{idx}/{len(articles)}", 
+                              **article_context)
                     
                     # 기사 내용 준비
                     content = article.get('content') or article.get('summary') or article.get('title', '')
@@ -73,7 +77,9 @@ class NewsletterSummarySystem:
                     # 이미지와 참고문헌 추출
                     article_url = article.get('link', '')
                     if article_url:
-                        logger.info(f"콘텐츠 메타데이터 추출 시작: {article_url}")
+                        logger.info("콘텐츠 메타데이터 추출 시작", 
+                                  url=article_url, 
+                                  **log_processing_step("extract_metadata"))
                         metadata = self.content_extractor.extract_content_metadata(article_url)
                         
                         # 추가 정보 추가
@@ -104,25 +110,48 @@ class NewsletterSummarySystem:
                     self._print_summary(idx, summary_result)
                     
                 except Exception as e:
-                    logger.error(f"기사 요약 실패: {article.get('title', 'Unknown')} - {e}")
+                    logger.error("기사 요약 실패", 
+                               error=str(e),
+                               **log_article_context(str(idx), article.get('title', 'Unknown')))
                     continue
             
-            logger.info(f"뉴스레터 요약 완료: {len(summaries)}개 기사 처리됨")
+            logger.info("뉴스레터 요약 완료", 
+                       **log_processing_step("complete", processed_count=len(summaries)))
             
             # HTML 파일로 내보내기
             if summaries:
                 try:
-                    html_filepath = self.html_exporter.export_summaries_to_html(summaries)
-                    logger.info(f"HTML 파일 생성 완료: {html_filepath}")
+                    # output 폴더에 내보내기
+                    html_filepath = self.html_exporter.export_summaries_to_html(
+                        summaries, 
+                        theme="default"
+                    )
+                    logger.info("HTML 파일 생성 완료", 
+                              filepath=html_filepath,
+                              **log_processing_step("export_html"))
                     print(f"\n🌐 HTML 파일이 생성되었습니다: {html_filepath}")
+                    
+                    # docs 폴더에도 내보내기 (GitHub Pages용)
+                    docs_filepath = self.html_exporter.export_to_docs(
+                        summaries,
+                        theme="default"
+                    )
+                    logger.info("GitHub Pages 파일 업데이트 완료", 
+                              filepath=docs_filepath,
+                              **log_processing_step("export_docs"))
+                    print(f"📄 GitHub Pages 파일 업데이트: {docs_filepath}")
                     print("   브라우저에서 열어서 이미지와 함께 확인하세요!")
                 except Exception as e:
-                    logger.error(f"HTML 파일 생성 실패: {e}")
+                    logger.error("HTML 파일 생성 실패", 
+                               error=str(e),
+                               **log_processing_step("export_html", status="failed"))
             
             return summaries
             
         except Exception as e:
-            logger.error(f"시스템 실행 실패: {e}")
+            logger.error("시스템 실행 실패", 
+                        error=str(e),
+                        **log_processing_step("system_run", status="failed"))
             raise
     
     def _print_summary(self, idx: int, summary: Dict):
@@ -202,7 +231,7 @@ def main():
     except KeyboardInterrupt:
         print("\n\n⏹️  사용자에 의해 중단되었습니다.")
     except Exception as e:
-        logger.error(f"프로그램 실행 실패: {e}")
+        logger.error("프로그램 실행 실패", error=str(e))
         print(f"\n❌ 오류가 발생했습니다: {e}")
 
 if __name__ == "__main__":

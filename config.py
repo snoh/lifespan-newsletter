@@ -4,9 +4,10 @@ Configuration settings for the newsletter summary system
 
 import os
 from pathlib import Path
+from typing import Dict, List, Optional
 
 # RSS 피드 설정
-RSS_FEEDS = [
+RSS_FEEDS: List[Dict[str, str]] = [
     {
         "url": "https://feeds.npr.org/1126/rss.xml",
         "name": "NPR Mental Health",
@@ -25,7 +26,7 @@ RSS_FEEDS = [
 ]
 
 # 심리학 관련 키워드 필터링
-PSYCHOLOGY_KEYWORDS = [
+PSYCHOLOGY_KEYWORDS: List[str] = [
     # 심리학 일반
     "psychology", "psychological", "psychologist", "psychotherapy", "therapy",
     "mental health", "mental illness", "depression", "anxiety", "stress",
@@ -59,7 +60,7 @@ PSYCHOLOGY_KEYWORDS = [
 ]
 
 # 제외할 키워드 (일반 뉴스 필터링)
-EXCLUDE_KEYWORDS = [
+EXCLUDE_KEYWORDS: List[str] = [
     "politics", "election", "president", "congress", "government",
     "economy", "business", "finance", "stock", "market", "trade",
     "war", "military", "weapon", "conflict", "violence", "crime",
@@ -69,28 +70,28 @@ EXCLUDE_KEYWORDS = [
 ]
 
 # OpenAI 설정
-OPENAI_MODELS = {
+OPENAI_MODELS: Dict[str, str] = {
     "keyword_extraction": "gpt-3.5-turbo",
     "draft_summary": "gpt-4o-mini", 
     "refine_summary": "gpt-4o-mini"
 }
 
-TEMPERATURE_SETTINGS = {
+TEMPERATURE_SETTINGS: Dict[str, float] = {
     "keyword_extraction": 0.3,
     "draft_summary": 0.4,
     "refine_summary": 0.2
 }
 
 # 텍스트 처리 설정
-MAX_TEXT_LENGTH = 6000
-MAX_RETRIES = 3
-DEFAULT_ARTICLE_LIMIT = 3
+MAX_TEXT_LENGTH: int = 6000
+MAX_RETRIES: int = 3
+DEFAULT_ARTICLE_LIMIT: int = 3
 
 # 파일 경로
-SPEC_FILE = Path("summary_spec.md")
-LOG_FILE = Path("summary.log")
+SPEC_FILE: Path = Path("summary_spec.md")
+LOG_FILE: Path = Path("summary.log")
 
 # 환경 변수
 from dotenv import load_dotenv
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") 
+OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY") 

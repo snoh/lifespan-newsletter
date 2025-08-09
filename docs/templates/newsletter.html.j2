@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="{{ lang|default('ko') }}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿</title>
-  <meta name="description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
+  <title>{{ title|default('🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿') }}</title>
+  <meta name="description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿') }}" />
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="" />
-  <meta property="og:title" content="🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿" />
-  <meta property="og:description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
-  <meta property="og:image" content="" />
+  <meta property="og:url" content="{{ url|default('') }}" />
+  <meta property="og:title" content="{{ title|default('🧠 심리학 뉴스레터 요약') }}" />
+  <meta property="og:description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약') }}" />
+  <meta property="og:image" content="{{ og_image|default('') }}" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="" />
-  <meta property="twitter:title" content="🧠 심리학 뉴스레터 요약 — 프리미엄 템플릿" />
-  <meta property="twitter:description" content="NPR & ScienceDaily 심리학 관련 뉴스 자동 요약 — 프리미엄 웹 템플릿" />
-  <meta property="twitter:image" content="" />
+  <meta property="twitter:url" content="{{ url|default('') }}" />
+  <meta property="twitter:title" content="{{ title|default('🧠 심리학 뉴스레터 요약') }}" />
+  <meta property="twitter:description" content="{{ description|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약') }}" />
+  <meta property="twitter:image" content="{{ twitter_image|default('') }}" />
   
   <style>
     /* =========================
@@ -42,7 +42,21 @@
       --grid: minmax(280px, 1fr);
     }
 
-    
+    {% if theme == 'mint' %}
+    :root {
+      --brand: #10d9c4;
+      --brand-2: #0891b2;
+      --ok: #059669;
+      --ring: 0 0 0 1px rgba(16, 217, 196, 0.35), 0 10px 30px rgba(16, 217, 196, 0.12);
+    }
+    {% elif theme == 'amber' %}
+    :root {
+      --brand: #f59e0b;
+      --brand-2: #d97706;
+      --ok: #059669;
+      --ring: 0 0 0 1px rgba(245, 158, 11, 0.35), 0 10px 30px rgba(245, 158, 11, 0.12);
+    }
+    {% endif %}
 
     @media (prefers-color-scheme: light) {
       :root {
@@ -61,7 +75,19 @@
         --shadow-2: 0 20px 60px rgba(16,19,26,.12);
       }
       
-      
+      {% if theme == 'mint' %}
+      :root {
+        --brand: #0891b2;
+        --brand-2: #0e7490;
+        --ring: 0 0 0 1px rgba(8, 145, 178, 0.25), 0 10px 30px rgba(8, 145, 178, 0.10);
+      }
+      {% elif theme == 'amber' %}
+      :root {
+        --brand: #d97706;
+        --brand-2: #b45309;
+        --ring: 0 0 0 1px rgba(217, 119, 6, 0.25), 0 10px 30px rgba(217, 119, 6, 0.10);
+      }
+      {% endif %}
     }
 
     * { box-sizing: border-box; }
@@ -204,229 +230,126 @@
   <div class="wrap">
     <!-- HERO -->
     <header class="hero" role="banner">
-      <h1>🧠 심리학 뉴스레터 요약</h1>
-      <p>NPR & ScienceDaily 심리학 관련 뉴스 자동 요약</p>
+      <h1>{{ header_title|default('🧠 심리학 뉴스레터 요약') }}</h1>
+      <p>{{ header_subtitle|default('NPR & ScienceDaily 심리학 관련 뉴스 자동 요약') }}</p>
       <div class="hero-meta">
         <span class="chip" title="생성일" aria-label="뉴스레터 생성일">
           <!-- calendar icon -->
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7 3v3M17 3v3M4 11h16M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          생성일: <strong>2025년 08월 09일 11:43</strong>
+          생성일: <strong>{{ generated_at|default('2025년 08월 08일 20:41') }}</strong>
         </span>
-        <span class="chip" title="버전" aria-label="템플릿 버전">v1.0 • Premium</span>
-        
+        <span class="chip" title="버전" aria-label="템플릿 버전">{{ version|default('v1.0 • Premium') }}</span>
+        {% if sources %}
         <span class="chip" title="데이터 출처" aria-label="검증된 데이터 출처">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.5"/>
           </svg>
-          Verified • NPR, ScienceDaily
+          Verified • {{ sources|join(', ') }}
         </span>
-        
+        {% endif %}
       </div>
     </header>
 
     <!-- ARTICLES -->
-    
-    <article class="card" aria-labelledby="art-1-title" >
+    {% for article in articles %}
+    <article class="card" aria-labelledby="art-{{ loop.index }}-title" {% if not loop.first %}style="margin-top:18px;"{% endif %}>
       <div class="card-hd">
-        <h2 id="art-1-title" class="card-ttl">1) Why do some people's memories stay sharp as they age?</h2>
-        
+        <h2 id="art-{{ loop.index }}-title" class="card-ttl">{{ loop.index }}) {{ article.title }}</h2>
+        {% if article.subtitle %}
+        <p class="card-sub">{{ article.subtitle }}</p>
+        {% endif %}
       </div>
       <div class="card-bd">
         <div class="meta">
-          
+          {% if article.source %}
           <div class="item">
             <span class="label">출처</span>
-            <span class="value">NPR Health</span>
+            <span class="value">{{ article.source }}</span>
           </div>
-          
-          
+          {% endif %}
+          {% if article.published_date %}
           <div class="item">
             <span class="label">발행일</span>
-            <span class="value">Fri, 08 Aug 2025 03:00:00 -0400</span>
+            <span class="value">{{ article.published_date }}</span>
           </div>
-          
-          
+          {% endif %}
+          {% if article.link %}
           <div class="item">
             <span class="label">링크</span>
             <span class="value">
-              <a href="https://www.npr.org/2025/08/08/nx-s1-5494697/aging-memory-alzheimers-dementia" target="_blank" rel="noopener">원문 보기</a>
+              <a href="{{ article.link }}" target="_blank" rel="noopener">원문 보기</a>
             </span>
           </div>
-          
-          
+          {% endif %}
+          {% if article.author %}
           <div class="item">
             <span class="label">저자</span>
-            <span class="value">Regina G. Barber 외</span>
+            <span class="value">{{ article.author }}</span>
           </div>
-          
+          {% endif %}
         </div>
         
-        
+        {% if article.keywords %}
         <div class="keywords" aria-label="키워드">
-          
-          <span class="kw">SuperAger</span>
-          
-          <span class="kw">Brain</span>
-          
-          <span class="kw">Northwestern</span>
-          
-          <span class="kw">Memory</span>
-          
-          <span class="kw">Aging</span>
-          
+          {% for keyword in article.keywords %}
+          <span class="kw">{{ keyword }}</span>
+          {% endfor %}
         </div>
+        {% endif %}
         
-        
-        
+        {% if article.images %}
         <section class="images" aria-label="관련 이미지">
           <div class="image-grid">
-            
+            {% for image in article.images %}
             <figure class="image">
               <img 
-                src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" 
-                alt="NPR logo" 
-                width="220"
-                height="160"
+                src="{{ image.url }}" 
+                alt="{{ image.alt|default('') }}" 
+                width="{{ image.width|default(220) }}"
+                height="{{ image.height|default(160) }}"
                 loading="lazy" 
                 decoding="async"
                 onerror="this.closest('figure').style.display='none'"
               />
-              
-              <figcaption>NPR logo</figcaption>
-              
+              {% if image.caption %}
+              <figcaption>{{ image.caption }}</figcaption>
+              {% endif %}
             </figure>
-            
+            {% endfor %}
           </div>
         </section>
+        {% endif %}
         
-        
-        
+        {% if article.references %}
         <section class="refs" aria-label="참고문헌">
-          
+          {% for ref in article.references %}
           <div class="ref">
-            <strong>Northwestern University Research</strong>
-            
-             — <a href="https://example.com/research" target="_blank" rel="noopener">링크</a>
-            
+            <strong>{{ ref.title }}</strong>
+            {% if ref.url %}
+             — <a href="{{ ref.url }}" target="_blank" rel="noopener">{{ ref.link_text|default('링크') }}</a>
+            {% endif %}
           </div>
-          
+          {% endfor %}
         </section>
+        {% endif %}
         
-        
-        
+        {% if article.summary %}
         <section class="summary" aria-label="요약" role="note">
-          <span class="badge b-pos" 
+          <span class="badge {{ 'b-pos' if article.tone == 'positive' else ('b-neu' if article.tone == 'neutral' else 'b-neg') }}" 
                 aria-label="감정 분석 결과">
-            Positive
+            {{ article.tone|title if article.tone else 'Positive' }}
           </span>
-          <p style="margin:10px 0 0">Northwestern University 연구진은 80세 이후에도 예외적으로 뛰어난 기억력을 보유한 SuperAgers를 확인했습니다. 이들의 뇌 기능 저하는 평균보다 느리며, 50–60대 수준의 인지 성능을 보이는 사례가 보고되었습니다. 해당 연구(Alzheimer's & Dementia 게재)는 고령층 기억 보존 전략 개발에 시사점을 제공합니다.</p>
+          <p style="margin:10px 0 0">{{ article.summary }}</p>
         </section>
-        
+        {% endif %}
       </div>
     </article>
-    
-    <article class="card" aria-labelledby="art-2-title" style="margin-top:18px;">
-      <div class="card-hd">
-        <h2 id="art-2-title" class="card-ttl">2) Johns Hopkins scientists grow a mini human brain that lights up and connects</h2>
-        
-        <p class="card-sub">뇌과학 연구 동향</p>
-        
-      </div>
-      <div class="card-bd">
-        <div class="meta">
-          
-          <div class="item">
-            <span class="label">출처</span>
-            <span class="value">ScienceDaily — Mind & Brain</span>
-          </div>
-          
-          
-          <div class="item">
-            <span class="label">발행일</span>
-            <span class="value">Mon, 04 Aug 2025 23:58:21 EDT</span>
-          </div>
-          
-          
-          <div class="item">
-            <span class="label">링크</span>
-            <span class="value">
-              <a href="https://www.sciencedaily.com/releases/2025/08/250803233113.htm" target="_blank" rel="noopener">원문 보기</a>
-            </span>
-          </div>
-          
-          
-          <div class="item">
-            <span class="label">저자</span>
-            <span class="value">Johns Hopkins Team</span>
-          </div>
-          
-        </div>
-        
-        
-        <div class="keywords" aria-label="키워드">
-          
-          <span class="kw">Organoid</span>
-          
-          <span class="kw">Neural activity</span>
-          
-          <span class="kw">Early brain dev.</span>
-          
-        </div>
-        
-        
-        
-        <section class="images" aria-label="관련 이미지">
-          <div class="image-grid">
-            
-            <figure class="image">
-              <img 
-                src="https://www.sciencedaily.com/images/1920/multi-region-brain-organoid.webp" 
-                alt="Lab-grown brain organoid" 
-                width="220"
-                height="160"
-                loading="lazy" 
-                decoding="async"
-                onerror="this.closest('figure').style.display='none'"
-              />
-              
-              <figcaption>Lab-grown brain organoid</figcaption>
-              
-            </figure>
-            
-          </div>
-        </section>
-        
-        
-        
-        <section class="refs" aria-label="참고문헌">
-          
-          <div class="ref">
-            <strong>JHU Research Paper</strong>
-            
-             — <a href="http://dx.doi.org/10.1002/advs.202503768" target="_blank" rel="noopener">링크</a>
-            
-          </div>
-          
-        </section>
-        
-        
-        
-        <section class="summary" aria-label="요약" role="note">
-          <span class="badge b-pos" 
-                aria-label="감정 분석 결과">
-            Positive
-          </span>
-          <p style="margin:10px 0 0">Hopkins 팀은 기본 혈관 구조와 전기적 신호를 보이는 멀티-리전 전뇌 오가노이드를 제시했습니다. 동물 모델의 한계를 보완하며, 자폐·정신분열 스펙트럼 등 초기 발달 연구 및 신약 테스트의 새로운 플랫폼이 될 수 있습니다.</p>
-        </section>
-        
-      </div>
-    </article>
-    
+    {% endfor %}
 
     <footer class="footer" role="contentinfo">
-      <p>🤖 AI 기반 자동 요약 • OpenAI 기반 파이프라인 • <span style="color:var(--muted)">© 2025</span></p>
+      <p>🤖 AI 기반 자동 요약 • OpenAI 기반 파이프라인 • <span style="color:var(--muted)">© {{ current_year|default('2025') }}</span></p>
     </footer>
   </div>
 </body>
