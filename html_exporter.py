@@ -204,6 +204,26 @@ class HTMLExporter:
         if not author or author == 'N/A':
             return ''
         
+        # 날짜/시간 패턴 제거 (예: "August 9, 20255:00 AM ET")
+        import re
+        author = re.sub(r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\s*\d{1,2}:\d{2}\s*(?:AM|PM)?\s*(?:ET|EST|EDT|CT|CST|CDT|MT|MST|MDT|PT|PST|PDT|UTC|GMT)?', '', author, flags=re.IGNORECASE)
+        
+        # 시간 패턴 제거 (예: "5:00 AM ET")
+        author = re.sub(r'\b\d{1,2}:\d{2}\s*(?:AM|PM)?\s*(?:ET|EST|EDT|CT|CST|CDT|MT|MST|MDT|PT|PST|PDT|UTC|GMT)?', '', author, flags=re.IGNORECASE)
+        
+        # 날짜 패턴 제거 (예: "Aug 9, 2025")
+        author = re.sub(r'\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s+\d{4}', '', author, flags=re.IGNORECASE)
+        
+        # "By" 제거
+        author = re.sub(r'\bBy\s+', '', author, flags=re.IGNORECASE)
+        
+        # 불필요한 공백 정리
+        author = re.sub(r'\s+', ' ', author).strip()
+        
+        # 쉼표로 구분된 경우 첫 번째 저자만 사용
+        if ',' in author:
+            author = author.split(',')[0].strip()
+        
         # 긴 저자 정보에서 핵심만 추출
         if len(author) > 50:
             # 첫 번째 저자만 추출하고 "외" 추가
