@@ -252,55 +252,45 @@ class HTMLExporter:
                 })
                 seen_urls.add(url)
         
-        # 최대 3개까지만 표시
-        return cleaned_refs[:3]
+        # 최대 5개까지만 표시
+        return cleaned_refs[:5]
     
     def _is_useful_reference(self, text: str, url: str) -> bool:
         """유용한 참고문헌인지 판단"""
         text_lower = text.lower()
         url_lower = url.lower()
         
-        # 제외할 패턴들
-        exclude_patterns = [
+        # 명확하게 제외할 패턴들 (텍스트에 정확히 일치하는 경우만)
+        strict_exclude_patterns = [
             'mla', 'apa', 'chicago',  # 인용 스타일
-            'mental health research',  # 일반적인 카테고리
-            'energy & resources',      # 관련 없는 카테고리
-            'study examines',          # 다른 연구 제목
-            'study reveals',           # 다른 연구 제목
-            'after 50 years',         # 다른 연구 제목
-            'keyboard shortcuts',      # 오디오 플레이어 도움말
-            'audio player',            # 오디오 플레이어 관련
-            'help',                    # 도움말
-            'accessibility',           # 접근성 도움말
-            'how to',                  # 사용법 설명
-            'tips',                    # 팁/도움말
+            'keyboard shortcuts for audio player',  # 오디오 플레이어 도움말
         ]
         
-        # 제외 패턴이 포함된 경우 False
-        for pattern in exclude_patterns:
-            if pattern in text_lower:
-                return False
+        # 텍스트가 정확히 제외 패턴과 일치하는 경우만 제외
+        if text_lower in [pattern.lower() for pattern in strict_exclude_patterns]:
+            return False
         
-        # URL에서도 제외할 패턴 확인
+        # URL에서 명확하게 제외할 패턴들
         url_exclude_patterns = [
-            'help', 'accessibility', 'tips', 'how-to', 'guide'
+            '/help/', '/accessibility/', '/tips/', '/how-to/', '/guide/'
         ]
         
         for pattern in url_exclude_patterns:
             if pattern in url_lower:
                 return False
         
-        # DOI 링크는 유용함
+        # DOI 링크는 항상 유용함
         if '10.1038/' in url or 'doi.org' in url:
             return True
         
-        # 원문 링크는 유용함 (하지만 도움말 페이지는 제외)
-        if 'sciencedaily.com' in url or 'npr.org' in url:
-            # NPR의 도움말/접근성 페이지는 제외
-            if 'npr.org' in url and any(pattern in url_lower for pattern in ['help', 'accessibility', 'tips']):
+        # 주요 뉴스 사이트의 링크는 유용함 (도움말 페이지 제외)
+        if any(site in url_lower for site in ['sciencedaily.com', 'npr.org', 'nature.com', 'science.org']):
+            # 도움말/접근성 페이지는 제외하되, 실제 기사는 유지
+            if any(pattern in url_lower for pattern in ['/help/', '/accessibility/', '/tips/']):
                 return False
             return True
         
+        # 기타 링크들도 기본적으로 유용하다고 가정 (너무 제한적이지 않게)
         return True
     
     def _convert_summary_to_bullets(self, summary: str) -> List[str]:
