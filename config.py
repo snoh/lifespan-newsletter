@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# RSS 피드 설정
+# RSS 피드 설정 (심리학/뇌과학 전용)
 RSS_FEEDS: List[Dict[str, str]] = [
     {
         "url": "https://feeds.npr.org/1126/rss.xml",
@@ -19,9 +19,9 @@ RSS_FEEDS: List[Dict[str, str]] = [
         "category": "psychology"
     },
     {
-        "url": "https://feeds.npr.org/1007/rss.xml",
-        "name": "NPR Health",
-        "category": "health"
+        "url": "https://feeds.npr.org/1008/rss.xml",
+        "name": "NPR Science",
+        "category": "neuroscience"
     }
 ]
 
@@ -59,14 +59,29 @@ PSYCHOLOGY_KEYWORDS: List[str] = [
     "meta-analysis", "systematic review", "longitudinal study"
 ]
 
-# 제외할 키워드 (일반 뉴스 필터링)
+# 제외할 키워드 (심리학/뇌과학과 무관한 내용 필터링)
 EXCLUDE_KEYWORDS: List[str] = [
+    # 정치/경제
     "politics", "election", "president", "congress", "government",
     "economy", "business", "finance", "stock", "market", "trade",
+    
+    # 전쟁/군사
     "war", "military", "weapon", "conflict", "violence", "crime",
+    
+    # 스포츠/엔터테인먼트
     "sports", "football", "basketball", "baseball", "soccer",
     "entertainment", "movie", "music", "celebrity", "hollywood",
-    "technology", "computer", "software", "hardware", "internet"
+    
+    # 기술/컴퓨터
+    "technology", "computer", "software", "hardware", "internet",
+    
+    # 해양/생물학 (심리학과 무관)
+    "ocean", "marine", "sea", "fish", "whale", "dolphin", "coral",
+    "ecosystem", "biodiversity", "conservation", "climate change",
+    
+    # 일반 건강 (심리학과 무관)
+    "cancer", "diabetes", "heart disease", "vaccine", "epidemic",
+    "virus", "bacteria", "infection", "surgery", "medication"
 ]
 
 # OpenAI 설정
