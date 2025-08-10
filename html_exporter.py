@@ -162,6 +162,14 @@ class HTMLExporter:
         # 참고문헌 데이터 변환 및 정리
         references = self._clean_references(summary.get('references', []))
         
+        # 참고문헌이 없으면 원문 링크를 참고문헌으로 추가
+        if not references and summary.get('link'):
+            references = [{
+                'title': '원문 기사',
+                'url': summary.get('link'),
+                'link_text': '링크'
+            }]
+        
         return {
             'title': summary.get('title', '제목 없음'),
             'subtitle': self._generate_subtitle(summary),
@@ -260,15 +268,28 @@ class HTMLExporter:
         text_lower = text.lower()
         url_lower = url.lower()
         
-        # 명확하게 제외할 패턴들 (텍스트에 정확히 일치하는 경우만)
-        strict_exclude_patterns = [
+        # 명확하게 제외할 패턴들
+        exclude_patterns = [
             'mla', 'apa', 'chicago',  # 인용 스타일
             'keyboard shortcuts for audio player',  # 오디오 플레이어 도움말
+            'mental health research',  # 일반적인 카테고리
+            'energy & resources',      # 관련 없는 카테고리
         ]
         
-        # 텍스트가 정확히 제외 패턴과 일치하는 경우만 제외
-        if text_lower in [pattern.lower() for pattern in strict_exclude_patterns]:
-            return False
+        # 제외 패턴이 포함된 경우 False
+        for pattern in exclude_patterns:
+            if pattern in text_lower:
+                return False
+        
+        # 관련 없는 연구 제목들 제외
+        unrelated_studies = [
+            'study examines what makes people susceptible to fake health news',
+            'after 50 years, a neutrino detector finally catches elusive ghost particles',
+        ]
+        
+        for study in unrelated_studies:
+            if study in text_lower:
+                return False
         
         # URL에서 명확하게 제외할 패턴들
         url_exclude_patterns = [
