@@ -159,14 +159,8 @@ class HTMLExporter:
         
 
         
-        # 참고문헌 데이터 변환
-        references = []
-        for ref in summary.get('references', []):
-            references.append({
-                'title': ref.get('text', '참고문헌'),
-                'url': ref.get('url', ''),
-                'link_text': '링크'
-            })
+        # 참고문헌 데이터 변환 및 정리
+        references = self._clean_references(summary.get('references', []))
         
         return {
             'title': summary.get('title', '제목 없음'),
@@ -232,6 +226,64 @@ class HTMLExporter:
                 return f"{first_author} 외"
         
         return author
+    
+    def _clean_references(self, references: List[Dict]) -> List[Dict]:
+        """참고문헌 정리 및 필터링"""
+        if not references:
+            return []
+        
+        cleaned_refs = []
+        seen_urls = set()
+        
+        for ref in references:
+            url = ref.get('url', '')
+            text = ref.get('text', '')
+            
+            # URL이 없거나 이미 처리된 URL은 건너뛰기
+            if not url or url in seen_urls:
+                continue
+            
+            # 불필요한 참고문헌 필터링
+            if self._is_useful_reference(text, url):
+                cleaned_refs.append({
+                    'title': text,
+                    'url': url,
+                    'link_text': '링크'
+                })
+                seen_urls.add(url)
+        
+        # 최대 3개까지만 표시
+        return cleaned_refs[:3]
+    
+    def _is_useful_reference(self, text: str, url: str) -> bool:
+        """유용한 참고문헌인지 판단"""
+        text_lower = text.lower()
+        url_lower = url.lower()
+        
+        # 제외할 패턴들
+        exclude_patterns = [
+            'mla', 'apa', 'chicago',  # 인용 스타일
+            'mental health research',  # 일반적인 카테고리
+            'energy & resources',      # 관련 없는 카테고리
+            'study examines',          # 다른 연구 제목
+            'study reveals',           # 다른 연구 제목
+            'after 50 years',         # 다른 연구 제목
+        ]
+        
+        # 제외 패턴이 포함된 경우 False
+        for pattern in exclude_patterns:
+            if pattern in text_lower:
+                return False
+        
+        # DOI 링크는 유용함
+        if '10.1038/' in url or 'doi.org' in url:
+            return True
+        
+        # 원문 링크는 유용함
+        if 'sciencedaily.com' in url or 'npr.org' in url:
+            return True
+        
+        return True
     
     def _convert_summary_to_bullets(self, summary: str) -> List[str]:
         """요약 텍스트를 불릿 포인트로 변환"""
