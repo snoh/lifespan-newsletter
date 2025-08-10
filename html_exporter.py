@@ -268,6 +268,12 @@ class HTMLExporter:
             'study examines',          # 다른 연구 제목
             'study reveals',           # 다른 연구 제목
             'after 50 years',         # 다른 연구 제목
+            'keyboard shortcuts',      # 오디오 플레이어 도움말
+            'audio player',            # 오디오 플레이어 관련
+            'help',                    # 도움말
+            'accessibility',           # 접근성 도움말
+            'how to',                  # 사용법 설명
+            'tips',                    # 팁/도움말
         ]
         
         # 제외 패턴이 포함된 경우 False
@@ -275,12 +281,24 @@ class HTMLExporter:
             if pattern in text_lower:
                 return False
         
+        # URL에서도 제외할 패턴 확인
+        url_exclude_patterns = [
+            'help', 'accessibility', 'tips', 'how-to', 'guide'
+        ]
+        
+        for pattern in url_exclude_patterns:
+            if pattern in url_lower:
+                return False
+        
         # DOI 링크는 유용함
         if '10.1038/' in url or 'doi.org' in url:
             return True
         
-        # 원문 링크는 유용함
+        # 원문 링크는 유용함 (하지만 도움말 페이지는 제외)
         if 'sciencedaily.com' in url or 'npr.org' in url:
+            # NPR의 도움말/접근성 페이지는 제외
+            if 'npr.org' in url and any(pattern in url_lower for pattern in ['help', 'accessibility', 'tips']):
+                return False
             return True
         
         return True
