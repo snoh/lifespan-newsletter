@@ -154,16 +154,10 @@ class HTMLExporter:
                         .replace('(Tone: Neutral)', '')
                         .strip())
         
-        # 이미지 데이터 변환
-        images = []
-        for img in summary.get('images', []):
-            images.append({
-                'url': img.get('url', ''),
-                'alt': img.get('alt', ''),
-                'caption': img.get('alt', ''),
-                'width': 220,
-                'height': 160
-            })
+        # 요약을 불릿 포인트로 변환
+        summary_bullets = self._convert_summary_to_bullets(clean_summary)
+        
+
         
         # 참고문헌 데이터 변환
         references = []
@@ -182,9 +176,10 @@ class HTMLExporter:
             'link': summary.get('link', ''),
             'author': self._clean_author(summary.get('author', '')),
             'keywords': summary.get('keywords', []),
-            'images': images,
+
             'references': references,
             'summary': clean_summary,
+            'summary_bullets': summary_bullets,
             'tone': tone
         }
     
@@ -217,6 +212,26 @@ class HTMLExporter:
                 return f"{first_author} 외"
         
         return author
+    
+    def _convert_summary_to_bullets(self, summary: str) -> List[str]:
+        """요약 텍스트를 불릿 포인트로 변환"""
+        if not summary:
+            return []
+        
+        # 문장 단위로 분리
+        sentences = summary.split('. ')
+        bullets = []
+        
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if sentence and len(sentence) > 10:  # 너무 짧은 문장 제외
+                # 문장 끝의 마침표 제거
+                if sentence.endswith('.'):
+                    sentence = sentence[:-1]
+                bullets.append(sentence)
+        
+        # 최대 5개까지만 표시
+        return bullets[:5]
     
     def _render_template(self, template_name: str, data: Dict) -> str:
         """템플릿 렌더링"""

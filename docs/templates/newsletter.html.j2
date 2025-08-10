@@ -175,19 +175,7 @@
       color: var(--text);
     }
 
-    .images { margin-top: 16px; }
-    .image-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
-    .image {
-      position: relative; border-radius: 12px; overflow: hidden; background: #0c111b;
-      border: 1px solid rgba(255,255,255,.08);
-    }
-    .image img { 
-      width: 100%; 
-      height: 160px; 
-      object-fit: cover; 
-      display: block;
-    }
-    .image figcaption { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+
 
     .refs { display: grid; gap: 10px; }
     .ref {
@@ -205,6 +193,32 @@
     .b-pos { background: rgba(52, 211, 153,.18); color: #10b981; border: 1px solid rgba(52, 211, 153,.35); }
     .b-neu { background: rgba(59, 130, 246,.18); color: #3b82f6; border: 1px solid rgba(59, 130, 246,.35); }
     .b-neg { background: rgba(248, 113, 113,.18); color: #ef4444; border: 1px solid rgba(248, 113, 113,.35); }
+    
+    /* 요약 섹션 스타일 */
+    .summary-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .summary-title { margin: 0; font-size: 16px; font-weight: 600; color: var(--text); }
+    .summary-bullets { margin: 0; padding-left: 20px; }
+    .summary-bullets li { margin-bottom: 8px; line-height: 1.6; color: var(--text); }
+    .summary-text { margin: 10px 0 0; line-height: 1.6; color: var(--text); }
+    
+    /* 키워드 섹션 스타일 */
+    .keywords-title { margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: var(--text); }
+    .keywords-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .kw { 
+      background: rgba(124, 137, 255, 0.15); 
+      color: var(--brand); 
+      padding: 6px 12px; 
+      border-radius: 20px; 
+      font-size: 13px; 
+      font-weight: 500;
+      border: 1px solid rgba(124, 137, 255, 0.25);
+      transition: all 0.2s ease;
+    }
+    .kw:hover { 
+      background: rgba(124, 137, 255, 0.25); 
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(124, 137, 255, 0.2);
+    }
 
     .footer { margin-top: 36px; color: var(--muted); text-align: center; }
 
@@ -292,34 +306,16 @@
         
         {% if article.keywords %}
         <div class="keywords" aria-label="키워드">
-          {% for keyword in article.keywords %}
-          <span class="kw">{{ keyword }}</span>
-          {% endfor %}
+          <h4 class="keywords-title">🔑 핵심 키워드</h4>
+          <div class="keywords-grid">
+            {% for keyword in article.keywords %}
+            <span class="kw">{{ keyword }}</span>
+            {% endfor %}
+          </div>
         </div>
         {% endif %}
         
-        {% if article.images %}
-        <section class="images" aria-label="관련 이미지">
-          <div class="image-grid">
-            {% for image in article.images %}
-            <figure class="image">
-              <img 
-                src="{{ image.url }}" 
-                alt="{{ image.alt|default('') }}" 
-                width="{{ image.width|default(220) }}"
-                height="{{ image.height|default(160) }}"
-                loading="lazy" 
-                decoding="async"
-                onerror="this.closest('figure').style.display='none'"
-              />
-              {% if image.caption %}
-              <figcaption>{{ image.caption }}</figcaption>
-              {% endif %}
-            </figure>
-            {% endfor %}
-          </div>
-        </section>
-        {% endif %}
+
         
         {% if article.references %}
         <section class="refs" aria-label="참고문헌">
@@ -336,11 +332,23 @@
         
         {% if article.summary %}
         <section class="summary" aria-label="요약" role="note">
-          <span class="badge {{ 'b-pos' if article.tone == 'positive' else ('b-neu' if article.tone == 'neutral' else 'b-neg') }}" 
-                aria-label="감정 분석 결과">
-            {{ article.tone|title if article.tone else 'Positive' }}
-          </span>
-          <p style="margin:10px 0 0">{{ article.summary }}</p>
+          <div class="summary-header">
+            <span class="badge {{ 'b-pos' if article.tone == 'positive' else ('b-neu' if article.tone == 'neutral' else 'b-neg') }}" 
+                  aria-label="감정 분석 결과">
+              {{ article.tone|title if article.tone else 'Positive' }}
+            </span>
+            <h4 class="summary-title">📋 핵심 요약</h4>
+          </div>
+          
+          {% if article.summary_bullets %}
+          <ul class="summary-bullets">
+            {% for bullet in article.summary_bullets %}
+            <li>{{ bullet }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="summary-text">{{ article.summary }}</p>
+          {% endif %}
         </section>
         {% endif %}
       </div>
@@ -392,19 +400,7 @@
   .lsn-no-scroll, .lsn-no-scroll body{overflow:hidden}
   </style>
 
-  <!-- 이미지 최적화 스크립트 -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('img').forEach(img => {
-      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
-      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
-      img.style.aspectRatio = img.style.aspectRatio || '16/9';
-      img.style.objectFit = img.style.objectFit || 'cover';
-      if (!img.getAttribute('onerror')) {
-        img.setAttribute('onerror', "this.closest('figure')?.remove()");
-      }
-    });
-  });
+
 
   // LSN Subscribe modal script
   (()=> {

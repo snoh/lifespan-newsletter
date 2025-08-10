@@ -179,6 +179,32 @@
     .b-pos { background: rgba(52, 211, 153,.18); color: #10b981; border: 1px solid rgba(52, 211, 153,.35); }
     .b-neu { background: rgba(59, 130, 246,.18); color: #3b82f6; border: 1px solid rgba(59, 130, 246,.35); }
     .b-neg { background: rgba(248, 113, 113,.18); color: #ef4444; border: 1px solid rgba(248, 113, 113,.35); }
+    
+    /* 요약 섹션 스타일 */
+    .summary-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .summary-title { margin: 0; font-size: 16px; font-weight: 600; color: var(--text); }
+    .summary-bullets { margin: 0; padding-left: 20px; }
+    .summary-bullets li { margin-bottom: 8px; line-height: 1.6; color: var(--text); }
+    .summary-text { margin: 10px 0 0; line-height: 1.6; color: var(--text); }
+    
+    /* 키워드 섹션 스타일 */
+    .keywords-title { margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: var(--text); }
+    .keywords-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .kw { 
+      background: rgba(124, 137, 255, 0.15); 
+      color: var(--brand); 
+      padding: 6px 12px; 
+      border-radius: 20px; 
+      font-size: 13px; 
+      font-weight: 500;
+      border: 1px solid rgba(124, 137, 255, 0.25);
+      transition: all 0.2s ease;
+    }
+    .kw:hover { 
+      background: rgba(124, 137, 255, 0.25); 
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(124, 137, 255, 0.2);
+    }
 
     .footer { margin-top: 36px; color: var(--muted); text-align: center; }
 
@@ -264,41 +290,19 @@
         
         
         <div class="keywords" aria-label="키워드">
-          
-          <span class="kw">SuperAger</span>
-          
-          <span class="kw">Brain</span>
-          
-          <span class="kw">Northwestern</span>
-          
-          <span class="kw">Memory</span>
-          
-          <span class="kw">Aging</span>
-          
+          <h4 class="keywords-title">🔑 핵심 키워드</h4>
+          <div class="keywords-grid">
+            <span class="kw">SuperAger</span>
+            <span class="kw">Brain</span>
+            <span class="kw">Northwestern</span>
+            <span class="kw">Memory</span>
+            <span class="kw">Aging</span>
+          </div>
         </div>
         
         
         
-        <section class="images" aria-label="관련 이미지">
-          <div class="image-grid">
-            
-            <figure class="image">
-              <img 
-                src="https://prod-eks-static-assets.npr.org/chrome_svg/npr-logo-2025.svg" 
-                alt="NPR logo" 
-                width="220"
-                height="160"
-                loading="lazy" 
-                decoding="async"
-                onerror="this.closest('figure').style.display='none'"
-              />
-              
-              <figcaption>NPR logo</figcaption>
-              
-            </figure>
-            
-          </div>
-        </section>
+
         
         
         
@@ -316,11 +320,19 @@
         
         
         <section class="summary" aria-label="요약" role="note">
-          <span class="badge b-pos" 
-                aria-label="감정 분석 결과">
-            Positive
-          </span>
-          <p style="margin:10px 0 0">Northwestern University 연구진은 80세 이후에도 예외적으로 뛰어난 기억력을 보유한 SuperAgers를 확인했습니다. 이들의 뇌 기능 저하는 평균보다 느리며, 50–60대 수준의 인지 성능을 보이는 사례가 보고되었습니다. 해당 연구(Alzheimer's & Dementia 게재)는 고령층 기억 보존 전략 개발에 시사점을 제공합니다.</p>
+          <div class="summary-header">
+            <span class="badge b-pos" 
+                  aria-label="감정 분석 결과">
+              Positive
+            </span>
+            <h4 class="summary-title">📋 핵심 요약</h4>
+          </div>
+          
+          <ul class="summary-bullets">
+            <li>Northwestern University 연구진은 80세 이후에도 예외적으로 뛰어난 기억력을 보유한 SuperAgers를 확인했습니다</li>
+            <li>이들의 뇌 기능 저하는 평균보다 느리며, 50–60대 수준의 인지 성능을 보이는 사례가 보고되었습니다</li>
+            <li>해당 연구(Alzheimer's & Dementia 게재)는 고령층 기억 보존 전략 개발에 시사점을 제공합니다</li>
+          </ul>
         </section>
         
       </div>
@@ -365,37 +377,17 @@
         
         
         <div class="keywords" aria-label="키워드">
-          
-          <span class="kw">Organoid</span>
-          
-          <span class="kw">Neural activity</span>
-          
-          <span class="kw">Early brain dev.</span>
-          
+          <h4 class="keywords-title">🔑 핵심 키워드</h4>
+          <div class="keywords-grid">
+            <span class="kw">Organoid</span>
+            <span class="kw">Neural activity</span>
+            <span class="kw">Early brain dev.</span>
+          </div>
         </div>
         
         
         
-        <section class="images" aria-label="관련 이미지">
-          <div class="image-grid">
-            
-            <figure class="image">
-              <img 
-                src="https://www.sciencedaily.com/images/1920/multi-region-brain-organoid.webp" 
-                alt="Lab-grown brain organoid" 
-                width="220"
-                height="160"
-                loading="lazy" 
-                decoding="async"
-                onerror="this.closest('figure').style.display='none'"
-              />
-              
-              <figcaption>Lab-grown brain organoid</figcaption>
-              
-            </figure>
-            
-          </div>
-        </section>
+
         
         
         
@@ -413,11 +405,18 @@
         
         
         <section class="summary" aria-label="요약" role="note">
-          <span class="badge b-pos" 
-                aria-label="감정 분석 결과">
-            Positive
-          </span>
-          <p style="margin:10px 0 0">Hopkins 팀은 기본 혈관 구조와 전기적 신호를 보이는 멀티-리전 전뇌 오가노이드를 제시했습니다. 동물 모델의 한계를 보완하며, 자폐·정신분열 스펙트럼 등 초기 발달 연구 및 신약 테스트의 새로운 플랫폼이 될 수 있습니다.</p>
+          <div class="summary-header">
+            <span class="badge b-pos" 
+                  aria-label="감정 분석 결과">
+              Positive
+            </span>
+            <h4 class="summary-title">📋 핵심 요약</h4>
+          </div>
+          
+          <ul class="summary-bullets">
+            <li>Hopkins 팀은 기본 혈관 구조와 전기적 신호를 보이는 멀티-리전 전뇌 오가노이드를 제시했습니다</li>
+            <li>동물 모델의 한계를 보완하며, 자폐·정신분열 스펙트럼 등 초기 발달 연구 및 신약 테스트의 새로운 플랫폼이 될 수 있습니다</li>
+          </ul>
         </section>
         
       </div>
@@ -431,22 +430,7 @@
 
   
 
-  <!-- 이미지 최적화 스크립트 -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('img').forEach(img => {
-      if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
-      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
-      img.style.aspectRatio = img.style.aspectRatio || '16/9';
-      img.style.objectFit = img.style.objectFit || 'cover';
-      if (!img.getAttribute('onerror')) {
-        img.setAttribute('onerror', "this.closest('figure')?.remove()");
-      }
-    });
-  });
 
-  
-  </script>
 
   <!-- === LSN Subscribe (canonical) === -->
   <button class="lsn-subscribe-fab" type="button" aria-haspopup="dialog" aria-controls="lsn-subscribe-modal" aria-label="구독 신청">
